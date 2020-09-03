@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 <!-- site metas -->
-<title>rento</title>
+<title>Renty</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -34,6 +34,15 @@
 </head>
 <!-- body -->
 <body class="main-layout">
+ 
+ 	<!-- check to ensure some user is logged in -->
+	<%-- <%
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	
+		if(session.getAttribute("username") == null) {
+			response.sendRedirect("login.jsp");
+		}
+	%> --%>
 	<!-- loader  -->
 	<div class="loader_bg">
 		<div class="loader">
@@ -65,9 +74,11 @@
 								<span class="navbar-toggler-icon"></span>
 							</button>
 							<div class="collapse navbar-collapse" id="navbarsExample04">
-								<form>
+								<form action="logout" method="get">
 									<div class="sign_btn">
-										<a href="#">Sign out</a>
+									<a href="viewProfile">Your Profile</a>
+									<a href="viewRentedHouses">Your Rented Houses</a>
+									<a href="logout">Sign out</a>
 									</div>
 								</form>
 							</div>
@@ -85,14 +96,13 @@
 			<div class="row d_flex">
 				<div class="col-md-12">
 					<div class="text-bg">
-						<h1>Hello Jaden.</h1>
+						<h1>Hello ${name}.</h1>
 						<strong>Find the best houses Here for rent</strong> <span>Your
 							Adventure Starts With Us</span>
 						<p>
 							Lorem Ipsum is simply dummy text of the printing and typesetting
 							industry. Lorem Ipsum has been the industry's standard dummy text
 							ever since theLorem Ipsum is simply dummy text of the printing
-							<head></head>
 						</p>
 						<form>
 							<a href="#">Read More</a>
@@ -102,7 +112,6 @@
 			</div>
 		</div>
 	</section>
-	</div>
 	<!-- end banner -->
 	<!-- car -->
 	<div class="car">
@@ -306,7 +315,7 @@
 						<div class="cont_call">
 							<h3>
 								<strong class="multi color_chang"> Call Now</strong><br>
-								1-800-RENTNOW
+								1-800-MYRENTY
 							</h3>
 						</div>
 					</div>
