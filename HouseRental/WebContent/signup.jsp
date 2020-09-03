@@ -13,13 +13,8 @@
 	<div class="wrapper fadeInDown">
 	  <div id="formContent">
 	    <!-- Tabs Titles -->
-	    <form>
-	    	<h2 class="inactive underlineHover">Sign In</h2>
-	    </form>
-	    <form>
-	   		<h2 class="active"> Sign Up </h2>
-	   		 <input type="submit" class="fadeIn fourth" value="Sign Up">
-	    </form>
+	    <h2 class="active"> Sign Up </h2>
+	    <h2 class="inactive underlineHover">Sign In </h2>
 	
 	    <!-- Logo -->
 	    <div id="logo" class="fadeIn first">

@@ -13,9 +13,25 @@
 	<div class="wrapper fadeInDown">
 	  <div id="formContent">
 	    <!-- Tabs Titles -->
-	    <h2 class="active"> Sign In </h2>
+	    <h2 class="inactive underlineHover">Sign In </h2>
 	    <h2 class="inactive underlineHover">Sign Up </h2>
-	
+	    <!-- <form action="login" method="post">
+	    	<h2 class="inactive underlineHover">Sign In </h2>
+	    	<input type="submit" value="Sign In">
+	    </form>
+	    
+	    <form action="sign up" method="post">
+	    	<h2 class="inactive underlineHover">Sign Up </h2>
+	    	<input type="submit" value="Sign Up">
+	    </form> -->
+	    
+	    <%-- <%
+		    if((request.getParameter("signup") == null)?false:true){
+		    	String url = "signup.jsp";
+		        response.sendRedirect(url);
+		    }
+	    %> --%>
+	    
 	    <!-- Logo -->
 	    <div id="logo" class="fadeIn first">
 	      <img src="img/logo.png" width="30" height="85" id="icon" class="wrapper1" alt="Logo" />
