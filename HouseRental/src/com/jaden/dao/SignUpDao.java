@@ -11,31 +11,7 @@ public class SignUpDao {
 	ResultSet rs;
 	PreparedStatement stmt;
 	
-	public void insertEntry(String username, String password, String email, String type) {
-		// Create new login for user
-		try {
-			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlInsertUser);
-			stmt.setString(1, username);
-			stmt.setString(2, password);
-			stmt.setString(3, type);
-			stmt.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		// Get inserted user's id
-		int id;
-		try {
-			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetLastUser);
-			stmt.setString(1, username);
-			stmt.setString(2, password);
-			rs = stmt.executeQuery();
-			if (rs.next())
-				id = rs.getInt(1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+	public void insertEntry(String username, String password, String email, String type) {		
 		// Insert user into appropriate table
 		String sqlQuery = "";
 		switch(type) {
@@ -55,10 +31,36 @@ public class SignUpDao {
 			stmt = DBConnection.conn.prepareStatement(sqlQuery);
 			stmt.setString(1, username);
 			stmt.setString(2, "");
-			stmt.setString(3, "U");
-			stmt.setString(4, null);
+			stmt.setString(3, null);
+			stmt.setString(4, email);
 			stmt.setString(5, "");
-			stmt.setString(6, "");
+			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+		// Get inserted user's id
+		int id = -1;
+		try {
+			if (type.equals("owners")) {
+				stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRecentOwnerID);
+			}if (type.equals("customers")) {
+				stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRecentCustomerID);
+			}
+			rs = stmt.executeQuery();
+			if (rs.next())
+				id = rs.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// Create new login for user
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlInsertUser);
+			stmt.setInt(1, id);
+			stmt.setString(2, username);
+			stmt.setString(3, password);
+			stmt.setString(4, type);
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
