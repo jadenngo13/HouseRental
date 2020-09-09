@@ -33,7 +33,7 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>Image</th>
+						<th> </th>
 						<th>Price</th>
 						<th>Location</th>
 						<th>Description</th>
@@ -44,14 +44,15 @@
 					<c:forEach var="rental" items="${listRentals}">
 
 						<tr>
-							<td><c:out value="${rental.imageFName}" /></td>
+							<td><img  height="200px" width="400px" src="<c:out value="${rental.imageFName}"/>"/></td>
+						<%-- 	<td><c:out value="${rental.imageFName}" /></td> --%>
 							<td><c:out value="$ ${rental.price}" /></td>
 							<td><c:out value="${rental.location}" /></td>
 							<td><c:out value="${rental.description}" /></td>
 							<td><div class="container text-left">
-							<form action="<%=request.getContextPath()%>/rent" method="get"> 
+							<form action="<%=request.getContextPath()%>/rentView" method="get"> 
 								<input type="hidden" name="selectedRentalID" value="${rental.id}" />
-   								<input type="submit" name="rent" value="Rent Now!" /> 
+   								<input type="submit" name="rent" value="Start My Adventure!" /> 
 
 
 							<%-- <a href="<%=request.getContextPath()%>/rent"

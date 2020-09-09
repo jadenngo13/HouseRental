@@ -5,21 +5,27 @@ public class Rental {
 	private int price;
 	private String location;
 	private String description;
+	private String rentStartDate;
+	private String rentEndDate;
 	private String imageFName;
 	
-	public Rental(int price, String location, String description, String imageFName) {
+	public Rental(int price, String location, String description, String rentStartDate, String rentEndDate, String imageFName) {
 		this.price = price;
 		this.location = location;
 		this.description = description;
+		this.rentStartDate = rentStartDate;
+		this.rentEndDate = rentEndDate;
 		this.imageFName = imageFName;
 	}
 	
 	// Overload
-	public Rental(int id, int price, String location, String description, String imageFName) {
+	public Rental(int id, int price, String location, String description, String rentStartDate, String rentEndDate, String imageFName) {
 		this.id = id;
 		this.price = price;
 		this.location = location;
 		this.description = description;
+		this.rentStartDate = rentStartDate;
+		this.rentEndDate = rentEndDate;
 		this.imageFName = imageFName;
 	}
 	
@@ -36,6 +42,15 @@ public class Rental {
 	public String getDescription() {
 		return description;
 	}
+	
+	public String getRentStartDate() {
+		return rentStartDate;
+	}
+	
+	public String getRentEndDate() {
+		return rentEndDate;
+	}
+	
 	public String getImageFName() {
 		return imageFName;
 	}
@@ -51,6 +66,15 @@ public class Rental {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public void setRentStartDate(String rentStartDate) {
+		this.rentStartDate = rentStartDate;
+	}
+
+	public void setRentEndDate(String rentEndDate) {
+		this.rentEndDate = rentEndDate;
+	}
+	
 	public void setImageFName(String imageFName) {
 		this.imageFName = imageFName;
 	}

@@ -26,8 +26,10 @@ public class RentalDao {
                 int price = rs.getInt("price");
                 String location = rs.getString("location");
                 String desc = rs.getString("description");
+                String rentStartDate = rs.getString("rent_start_date");
+                String rentEndDate = rs.getString("rent_end_date");
                 String imageFName = rs.getString("image_file_name");
-                rentals.add(new Rental(id, price, location, desc, imageFName));
+                rentals.add(new Rental(id, price, location, desc, rentStartDate, rentEndDate, imageFName));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,6 +76,32 @@ public class RentalDao {
 		}
 		return "";
 	}
+	
+	public String getRentStartDate(int id) {
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalStartDate);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				return rs.getString(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	public String getRentEndDate(int id) {
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalEndDate);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				return rs.getString(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
  	
 	public String getImageFile(int id) {
 		try {
@@ -86,6 +114,23 @@ public class RentalDao {
 			e.printStackTrace();
 		}
 		return "";
+	}
+	
+	public void rentRental(int rentalID, String rentStart, String rentEnd, int custId) {
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateRental);
+			stmt.setString(1, rentStart);
+			stmt.setString(2, rentEnd);
+			stmt.setInt(3, rentalID);
+			stmt.execute();
+			
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateCustomerRentals);
+			stmt.setInt(1, rentalID);
+			stmt.setInt(2, custId);
+			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
 

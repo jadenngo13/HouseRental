@@ -15,7 +15,7 @@
 	</div>
 
 	<div align="center">
-		<h1>Hello ${name}</h1>
+		<h1>Hello ${fname}</h1>
 	</div>
 	<div align="center">
 		<c:if test="${user != null}">
@@ -52,7 +52,7 @@
 				</tr>
 				<tr>
 					<th>Birthday:</th>
-					<td><input type="text" name="birthday" size="45"
+					<td><input type="date" name="birthday" size="45"
 						value="<c:out value='${birthday}' />" /></td>
 				</tr>
 				<tr>
