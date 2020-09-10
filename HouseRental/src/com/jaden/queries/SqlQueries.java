@@ -3,10 +3,13 @@ package com.jaden.queries;
 public class SqlQueries {
 	
 	/***** Gets *****/
-	public final static String sqlGetUser = "SELECT * FROM logins WHERE username=? and password=?";
+	public final static String sqlGetUserFromLogin = "SELECT * FROM logins WHERE username=? and password=?";
+	public final static String sqlGetUser = "SELECT * FROM logins WHERE id=? and user_type=?";
 	public final static String sqlGetAllUsers = "SELECT * FROM logins";
 	public final static String sqlGetAllOwners = "SELECT * FROM owners";
+	public final static String sqlGetOwnerFromID = "SELECT * FROM customers WHERE id=?";
 	public final static String sqlGetAllCustomers = "SELECT * FROM customers";
+	public final static String sqlGetCustomerFromID = "SELECT * FROM customers WHERE id=?";
 	public final static String sqlGetAllRentals = "SELECT * FROM rentals";
 	
 	public final static String sqlGetType = "SELECT user_type FROM logins WHERE username=? and password=?";
@@ -35,18 +38,27 @@ public class SqlQueries {
 	public final static String sqlGetRentalStartDate = "SELECT rent_start_date FROM rentals WHERE id=?";
 	public final static String sqlGetRentalEndDate = "SELECT rent_end_date FROM rentals WHERE id=?";
 	public final static String sqlGetRentalFileName = "SELECT image_file_name FROM rentals WHERE id=?";
+	
+	public static String sqlGetRecentOwner = "SELECT * FROM owners WHERE id = (SELECT MAX(id) FROM owners);";
+	public static String sqlGetRecentCustomer = "SELECT * FROM customers WHERE id = (SELECT MAX(id) FROM customers);";
 
 	/***** Inserts *****/
-	public final static String sqlInsertUser = "INSERT INTO logins(username, password, user_type) VALUES(?, ?, ?)";
+	public final static String sqlInsertUser = "INSERT INTO logins(id, username, password, user_type) VALUES(?, ?, ?, ?)";
 	public final static String sqlInsertOwner = "INSERT INTO owners(first_name, last_name, birthday, email, rentals) VALUES(?, ?, ?, ?, ?)";
 	public final static String sqlInsertCustomer = "INSERT INTO customers(first_name, last_name, birthday, email, rentals) VALUES(?, ?, ?, ?, ?)";
 	
 	/***** Updates *****/
-	public static String sqlUpdateUser = "UPDATE logins SET username=? WHERE id=? AND user_type=?";
+	public static String sqlUpdateUser = "UPDATE logins SET username=?, password=? WHERE id=? AND user_type=?";
 	public static String sqlUpdateOwner= "UPDATE owners SET first_name=?, last_name=?, birthday=?, email=? WHERE id=?";
 	public static String sqlUpdateCustomer= "UPDATE customers SET first_name=?, last_name=?, birthday=?, email=? WHERE id=?";
 	
 	public static String sqlUpdateCustomerRentals = "UPDATE customers SET rentals=? WHERE id=?";
 	public static String sqlUpdateRental = "UPDATE rentals SET rent_start_date=?, rent_end_date=? WHERE id=?";
+	
+	/***** Deletions *****/
+	public static String sqlDeleteUser = "DELETE FROM logins WHERE id=? AND user_type=?";
+	public static String sqlDeleteOwner = "DELETE FROM owners WHERE id=?";
+	public static String sqlDeleteCustomer = "DELETE FROM customers WHERE id=?";
+	public static String sqlDeletRental = "DELETE FROM rentals WHERE id=?";
 	
 }

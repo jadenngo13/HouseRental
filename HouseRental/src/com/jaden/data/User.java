@@ -35,6 +35,13 @@ public class User {
 		this.username = username;
 		this.password = password;
 	}
+	
+	public User(int id, String username, String password, String userType) {
+		this.id = id;
+		this.userType = userType;
+		this.username = username;
+		this.password = password;
+	}
 
 	public int getId() {
 		return id;

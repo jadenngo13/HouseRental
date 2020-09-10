@@ -13,7 +13,7 @@ public class LoginDao {
 	
 	public boolean check(String uname, String pass) {
 		try {
-			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetUser);
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetUserFromLogin);
 			stmt.setString(1, uname);
 			stmt.setString(2, pass);
 			rs = stmt.executeQuery();
