@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.jaden.dao.UserDAO;
 import com.jaden.data.User;
@@ -31,6 +32,7 @@ public class AdminController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+    	HttpSession session = request.getSession();
         String action = request.getServletPath();
 
         try {
@@ -50,9 +52,16 @@ public class AdminController extends HttpServlet {
                 case "/update":
                     updateUser(request, response);
                     break;
-                default:
+                case "/list":
+                	session.setAttribute("tab", 2);
                     listUser(request, response);
                     break;
+                case "/home":
+                	session.setAttribute("tab", 1);
+                	showHome(request, response);
+                	break;
+                default:
+                	break;
             }
         } catch (SQLException ex) {
             throw new ServletException(ex);
@@ -121,5 +130,10 @@ public class AdminController extends HttpServlet {
         System.out.println("deleting id:" + id + " type:" + type);
         userDAO.deleteUser(id, type);
         response.sendRedirect("list");
+    }
+    
+    private void showHome(HttpServletRequest request, HttpServletResponse response)
+    throws SQLException, IOException {
+        response.sendRedirect("adminMain.jsp");
     }
 }

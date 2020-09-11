@@ -13,17 +13,19 @@ public class ProfileDAO {
 	public void saveUser(int id, String firstName, String lastName, String username, String email, String bday, String type) {
 		try {
 			switch(type) {
+			case "admins":
+				stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateAdmin);
+				break;
 			case "owners":
 				stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateOwner);
 				break;
 			case "customers":
 				stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateCustomer);
-				System.out.println("updating customer");
 				break;
 			default:
 				break;
 			}
-			System.out.println("values: " + firstName + " " + lastName + " " + username + " " + email + " " + bday);
+			System.out.println("valuess: " + firstName + " " + lastName + " " + username + " " + email + " " + bday);
 			stmt.setString(1, firstName);
 			stmt.setString(2, lastName);
 			stmt.setString(3, bday);

@@ -14,54 +14,93 @@
 </head>
 
 <body>
-
 	<div class="topnav">
-		<a class="active" href="adminMain.jsp">Home</a> <a
-			href="viewProfile.jsp">Your Profile</a> <a href="<%=request.getContextPath()%>/list">View
-			Users</a> <a href="<%=request.getContextPath()%>/logout">Logout</a>
+		<c:if test="${tab == 1}"> <a class="active" href="<%=request.getContextPath()%>/home">Home</a> 
+			<a href="viewProfile.jsp">Your Profile</a>
+			<a href="<%=request.getContextPath()%>/list">View Users</a>
+			<a href="<%=request.getContextPath()%>/logout">Logout</a>
+		</c:if>
+		<c:if test="${tab == 2}"> <a href="<%=request.getContextPath()%>/home">Home</a> 
+			<a href="viewProfile.jsp">Your Profile</a>
+			<a class="active" href="<%=request.getContextPath()%>/list">View Users</a>
+			<a href="<%=request.getContextPath()%>/logout">Logout</a>
+		</c:if>
 	</div>
 	<div class="row">
 		<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
-
+		<c:if test="${tab == 1}">
 		<div class="container">
-			<h3 class="text-center">List of Users</h3>
-			<hr>
-			<div class="container text-left">
-
-				<a href="<%=request.getContextPath()%>/new" class="btn btn-success">Add
-					New User</a>
-			</div>
 			<br>
+			<h3 class="text-center">Welcome Jaden</h3>
 			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Username</th>
-						<th>Password</th>
-						<th>User Type</th>
-						<th>Options</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!--   for (Todo todo: todos) {  -->
-					<c:forEach var="user" items="${listUser}">
-
+					<thead>
+					<br>
 						<tr>
-							<td><c:out value="${user.id}" /></td>
-							<td><c:out value="${user.username}" /></td>
-							<td><c:out value="${user.password}" /></td>
-							<td><c:out value="${user.userType}" /></td>
-							
-							<td><a href="edit?id=<c:out value='${user.id}' />&type=${user.userType}">Edit</a>
-								&nbsp;&nbsp;&nbsp;&nbsp; <a
-								href="delete?id=<c:out value='${user.id}' />&type=${user.userType}">Delete</a></td>
+							<th># of Total Users</th>
+							<th># of Customers</th>
+							<th># of Owners</th>
+							<th># of Rentals</th>
+							<th># of Rentals Rented out</th>
 						</tr>
-					</c:forEach>
-					<!-- } -->
-				</tbody>
+					</thead>
+					<tbody>
 
-			</table>
+					<tr>
+						<td><c:out value="${numUsers}" /></td>
+						<td><c:out value="${numCustomers}" /></td>
+						<td><c:out value="${numOwners}" /></td>
+						<td><c:out value="${numRentals}" /></td>
+						<td><c:out value="${numRented}" /></td>
+					</tr>
+						<!-- } -->
+					</tbody>
+
+				</table>
 		</div>
+		</c:if>
+		<c:if test="${tab == 2}">
+			<div class="container">
+				<br>
+				<h3 class="text-center">List of Users</h3>
+				<hr>
+				<div class="container text-left">
+
+					<a href="<%=request.getContextPath()%>/new" class="btn btn-success">Add
+						New User</a>
+				</div>
+				<br>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Username</th>
+							<th>Password</th>
+							<th>User Type</th>
+							<th>Options</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<c:forEach var="user" items="${listUser}">
+
+							<tr>
+								<td><c:out value="${user.id}" /></td>
+								<td><c:out value="${user.username}" /></td>
+								<td><c:out value="${user.password}" /></td>
+								<td><c:out value="${user.userType.substring(0,user.userType.length()-1)}" /></td>
+
+								<td><a
+									href="edit?id=<c:out value='${user.id}' />&type=${user.userType}">Edit</a>
+									&nbsp;&nbsp;&nbsp;&nbsp; <a
+									href="delete?id=<c:out value='${user.id}' />&type=${user.userType}">Delete</a></td>
+							</tr>
+						</c:forEach>
+						<!-- } -->
+					</tbody>
+
+				</table>
+			</div>
+		</c:if>
 	</div>
 </body>
 

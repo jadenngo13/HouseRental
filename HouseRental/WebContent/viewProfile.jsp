@@ -7,15 +7,29 @@
 	<%@ include file="css/mainView.css"%>
 </style>
 <title>View Profile</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
 </head>
 <body>
 	<div class="topnav">
-		<a href="${type1}Main.jsp">Home</a> <a class="active" href="viewProfile.jsp">Your Profile</a> <a
-			href="viewRentals.jsp">View Rentals</a> <a href="<%=request.getContextPath()%>/logout">Logout</a>
+		<c:if test="${type == 'admins'}">
+			<a href="adminMain.jsp">Home</a>
+			<a class="active" href="viewProfile.jsp">Your Profile</a>
+			<a href="<%=request.getContextPath()%>/list">View Users</a>
+			<a href="<%=request.getContextPath()%>/logout">Logout</a>
+		</c:if>
+		<c:if test="${type ne 'admins'}"> <a href="${type1}Main.jsp">Home</a> 
+			<a class="active" href="viewProfile.jsp">Your Profile</a> 
+			<a href="viewRentals.jsp">View Rentals</a> 
+			<a href="<%=request.getContextPath()%>/logout">Logout</a>
+		</c:if> 
 	</div>
 
 	<div align="center">
-		<h1>Hello ${fname}</h1>
+	<br>
+		<h1>Edit Your Profile</h1>
 	</div>
 	<div align="center">
 		<c:if test="${user != null}">

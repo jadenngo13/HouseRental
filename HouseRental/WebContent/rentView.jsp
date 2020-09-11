@@ -18,6 +18,21 @@
 	crossorigin="anonymous">
 </head>
 <body>
+	<script>
+		var dates = ["2020-09-12", "2020-09-13", "2020-09-14"];
+		
+		function DisableDates(date) {
+		    var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+		    return [dates.indexOf(string) == -1];
+		}
+		 
+		$(function() {
+		     $(".rentalDates").datepicker({
+		         beforeShowDay: DisableDates
+		     });
+		});
+	</script>
+
 	<div class="topnav">
 		<a href="customerMain.jsp">Home</a> <a href="viewProfile.jsp">Your
 			Profile</a> <a href="viewRentals.jsp">View Rentals</a> <a
@@ -33,17 +48,17 @@
 		<br>
 		<h5 style="text-align: center">${rentalDescription}</h5>
 		<h5 style="text-align: center">Location: ${rentalLocation}</h5>
-		<div class="rentButton" style="text-align: center">
-			<form action="<%=request.getContextPath()%>/rent" method="post"
-				style="text-align: center">
-				<input class="rentalDates" type="date" name="rentalEndDate" min="${rentalEndDate}" size="45"
-					value="${rentalEndDate}" /> 
-				<input class="rentalDates" type="date" name="rentalAvailDate" min="${rentalEndDate}" size="45"
-					 size="45" value="${rentalEndDate}"/> 
-				<input type="hidden" name="selectedRentalID" value="${rental.id}" /> 
+		<form action="<%=request.getContextPath()%>/rent" method="post"
+			style="text-align: center">
+			<input class="rentalDates" type="text" name="rentalEndDate" min="${rentalEndDate}" size="45"
+				value="${rentalEndDate}" /> 
+			<input class="rentalDates" type="text" name="rentalAvailDate" min="${rentalEndDate}" size="45"
+				 size="45" value="${rentalEndDate}"/> 
+			<input type="hidden" name="selectedRentalID" value="${rental.id}" /> 
+			<div class="rentButton" style="text-align: center">
 				<input type="submit" name="rent" value="Rent Now!" />
-			</form>
-		</div>
+			</div>	
+		</form>
 		<br>
 	</div>
 </body>

@@ -77,7 +77,7 @@ public class LoginDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "";	
+		return null;	
 	}
 	
 	public String getLastName(int id, String type) {
@@ -103,12 +103,15 @@ public class LoginDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "";	
+		return null;	
 	}
 	
 	public String getEmail(int id, String type) {
 		try {
 			switch (type) {
+			case "admins":
+				stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetAdminEmail);
+				break;
 			case "owners":
 				stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerEmail);
 				break;
@@ -126,12 +129,15 @@ public class LoginDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "";	
+		return null;	
 	}
 	
 	public String getBirthday(int id, String type) {
 		try {
 			switch (type) {
+			case "admins":
+				stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetAdminBirthday);
+				break;
 			case "owners":
 				stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerBirthday);
 				break;
@@ -149,6 +155,6 @@ public class LoginDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "";	
+		return null;	
 	}
 }

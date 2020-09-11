@@ -13,6 +13,56 @@ import com.jaden.queries.SqlQueries;
 public class UserDAO {
 	private PreparedStatement stmt, stmt1;
 
+	public int[] getNumUsers() throws SQLException {
+		int[] result = new int[5];
+		ResultSet rs;
+		int counter = 0;
+		
+		// Get number of total users
+		stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetAllUsers);
+		rs = stmt.executeQuery();
+		while (rs.next())
+			counter++;
+		
+		result[0] = counter;
+		System.out.println("counter: " + counter);
+		
+		// Get number of customers
+		counter = 0;
+		stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetAllOwners);
+		rs = stmt.executeQuery();
+		while (rs.next())
+			counter++;
+		
+		result[1] = counter;
+		System.out.println("counter: " + counter);
+		
+		// Get number of owners
+		counter = 0;
+		stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetAllCustomers);
+		rs = stmt.executeQuery();
+		while (rs.next())
+			counter++;
+		
+		result[2] = counter;
+		System.out.println("counter: " + counter);
+		
+		// Get number of customers
+		counter = 0;
+		stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetAllRentals);
+		rs = stmt.executeQuery();
+		while (rs.next())
+			counter++;
+		
+		result[3] = counter;
+		System.out.println("counter: " + counter);
+		
+		// Get number of rented rentals
+		result[4] = 0;
+		
+		return result;
+	}
+	
     public void insertUser(User user) throws SQLException {
         try {
         	// Insert into corresponding data type

@@ -37,6 +37,23 @@ public class RentalDao {
         return rentals;
     }
 	
+	public List<Rental> selectAllRented(List<Integer> rentalIds) {
+		List < Rental > rentals = new ArrayList < > ();
+	    try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalFromID);
+			for (int id : rentalIds) {
+				stmt.setInt(1, id);
+				rs = stmt.executeQuery();
+				if (rs.next()) {
+					rentals.add(new Rental(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return rentals;
+	}
+	
 	public int getPrice(int id) {
 		try {
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalPrice);

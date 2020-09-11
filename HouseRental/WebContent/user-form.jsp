@@ -15,7 +15,7 @@
 
 <body>
 	<div class="topnav">
-		<a class="active" href="adminMain.jsp">Home</a> <a
+		<a class="active" href="<%=request.getContextPath()%>/home">Home</a> <a
 			href="viewProfile.jsp">Your Profile</a> <a href="adminMain.jsp"> View Users</a> 
 			<a href="<%=request.getContextPath()%>/logout">Logout</a>
 	</div>
