@@ -38,8 +38,7 @@ public class SqlQueries {
 	public final static String sqlGetRentalPrice = "SELECT price FROM rentals WHERE id=?";
 	public final static String sqlGetRentalLocation = "SELECT location FROM rentals WHERE id=?";
 	public final static String sqlGetRentalDescription = "SELECT description FROM rentals WHERE id=?";
-	public final static String sqlGetRentalStartDate = "SELECT rent_start_date FROM rentals WHERE id=?";
-	public final static String sqlGetRentalEndDate = "SELECT rent_end_date FROM rentals WHERE id=?";
+	public final static String sqlGetRentalRentedDates = "SELECT rented_dates FROM rentals WHERE id=?";
 	public final static String sqlGetRentalFileName = "SELECT image_file_name FROM rentals WHERE id=?";
 	
 	public static String sqlGetRecentAdmin = "SELECT * FROM admins WHERE id = (SELECT MAX(id) FROM admins);";
@@ -59,7 +58,7 @@ public class SqlQueries {
 	public static String sqlUpdateCustomer= "UPDATE customers SET first_name=?, last_name=?, birthday=?, email=? WHERE id=?";
 	
 	public static String sqlUpdateCustomerRentals = "UPDATE customers SET rentals=? WHERE id=?";
-	public static String sqlUpdateRental = "UPDATE rentals SET rent_start_date=?, rent_end_date=? WHERE id=?";
+	public static String sqlUpdateRental = "UPDATE rentals SET rented_dates=? WHERE id=?";
 	
 	/***** Deletions *****/
 	public static String sqlDeleteUser = "DELETE FROM logins WHERE id=? AND user_type=?";

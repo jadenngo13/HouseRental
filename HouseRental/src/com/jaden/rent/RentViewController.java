@@ -3,7 +3,9 @@ package com.jaden.rent;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,14 +22,14 @@ import com.jaden.dao.RentalDao;
 @WebServlet("/rentView")
 public class RentViewController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private RentalDao rentalDao;
+	private RentalDao rentalDAO;
 	private DateTimeFormatter formatter;
 	private LocalDateTime today;
 	private Date dt;
 	private LocalDate tdy, tmmr, twoDays;
 
 	public void init(ServletConfig config) throws ServletException {
-		rentalDao = new RentalDao();
+		rentalDAO = new RentalDao();
 		formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
 		today = LocalDateTime.now();  
 		dt = new Date();
@@ -46,14 +48,15 @@ public class RentViewController extends HttpServlet {
 		String imageFileUrl;
 		String currDate;
 		String tmmrsDate;
-		String availRentDate;
+		String firstAvailRentDate;
+		List<String> rentedDates;
+		String rentedDatesString;
 		
-		price = rentalDao.getPrice(id);
-		location = rentalDao.getLocation(id);
-		desc = rentalDao.getDescription(id);
-		rentalStartDate = rentalDao.getRentStartDate(id);
-		rentalEndDate = rentalDao.getRentEndDate(id);
-		imageFileUrl = rentalDao.getImageFile(id);
+		price = rentalDAO.getPrice(id);
+		location = rentalDAO.getLocation(id);
+		desc = rentalDAO.getDescription(id);
+		rentalStartDate = null;
+		imageFileUrl = rentalDAO.getImageFile(id);
 		if (rentalStartDate == null) {
 			rentalStartDate = formatter.format(today);
 			rentalEndDate = tmmr.toString();
@@ -61,19 +64,21 @@ public class RentViewController extends HttpServlet {
 		currDate = formatter.format(today);
 		tmmrsDate = tmmr.toString();
 		
-
-		
-		System.out.println("rental info: " + price + " " + location + " " + desc + " " + rentalStartDate + " " + rentalEndDate);
+		rentedDates = rentalDAO.getRentedDates(id);
+		rentedDatesString = rentalDAO.getRentedDatesString(id);
+		firstAvailRentDate = rentalDAO.getFirstAvailDate(rentedDatesString);
+		System.out.println("first avail: " + firstAvailRentDate);
 		
 		session.setAttribute("rentalID", id);
 		session.setAttribute("rentalPrice", price);
 		session.setAttribute("rentalLocation", location);
 		session.setAttribute("rentalDescription", desc);
-		session.setAttribute("rentalStartDate", rentalStartDate);
-		session.setAttribute("rentalEndDate", rentalEndDate);
 		session.setAttribute("imageFileUrl", imageFileUrl);
 		session.setAttribute("currentDate", currDate);
 		session.setAttribute("tmmrsDate", tmmrsDate);
+		session.setAttribute("firstAvailDate", firstAvailRentDate);
+		session.setAttribute("rentedDates", rentedDates);
+		session.setAttribute("rentedDatesString", rentedDatesString);
 		
 		
 		response.sendRedirect("rentView.jsp");

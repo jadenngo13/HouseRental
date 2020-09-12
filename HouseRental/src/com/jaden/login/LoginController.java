@@ -1,6 +1,7 @@
 package com.jaden.login;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import com.jaden.connection.DBConnection;
 import com.jaden.dao.LoginDao;
 import com.jaden.dao.RentalDao;
 import com.jaden.dao.UserDAO;
+import com.jaden.data.DatePair;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
@@ -78,9 +80,7 @@ public class LoginController extends HttpServlet {
 					response.sendRedirect("ownerMain.jsp");
 					break;
 				case "customers":
-					List <Integer> rented = new ArrayList<>();
-					rented.add(1);
-					session.setAttribute("rentedRentals", rentalDAO.selectAllRented(rented));
+					// get all rentals that are being rented by customer
 					session.setAttribute("listRentals", rentalDAO.selectAllRentals());
 					session.setAttribute("tab", 0);
 					response.sendRedirect("customerMain.jsp");

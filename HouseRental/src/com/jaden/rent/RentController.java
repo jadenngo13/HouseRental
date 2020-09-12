@@ -24,11 +24,19 @@ public class RentController extends HttpServlet {
 		
 		int rentalID = (int)session.getAttribute("rentalID");
 		int customerID = (int)session.getAttribute("id");
+		String rentedDates = (String) session.getAttribute("rentedDatesString");
 		String rentStart = request.getParameter("rentalStartDate");
 		String rentEnd = request.getParameter("rentalEndDate");
 		
-		System.out.println(rentalID + " " + customerID + " " + rentStart + " " + rentEnd);
+		LocalDate s = LocalDate.parse(rentStart);
+		LocalDate e = LocalDate.parse(rentEnd);
+		if (e.isBefore(s) && !rentalDao.checkDateInterfere(rentedDates, rentStart, rentEnd)) {
+			System.out.println("Incorrect Date.");
+		} else {
 		
-		rentalDao.rentRental(rentalID, rentStart, rentEnd, customerID);
+			System.out.println("rent controller: " + rentalID + " " + customerID + " " + rentStart + " " + rentEnd);
+			
+			rentalDao.rentRental(rentalID, rentedDates, rentStart, rentEnd, customerID);
+		}
 	}
 }

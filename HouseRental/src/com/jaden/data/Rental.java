@@ -5,27 +5,24 @@ public class Rental {
 	private int price;
 	private String location;
 	private String description;
-	private String rentStartDate;
-	private String rentEndDate;
+	private String rentedDates;
 	private String imageFName;
 	
-	public Rental(int price, String location, String description, String rentStartDate, String rentEndDate, String imageFName) {
+	public Rental(int price, String location, String description, String rentedDates, String imageFName) {
 		this.price = price;
 		this.location = location;
 		this.description = description;
-		this.rentStartDate = rentStartDate;
-		this.rentEndDate = rentEndDate;
+		this.rentedDates = rentedDates;
 		this.imageFName = imageFName;
 	}
 	
 	// Overload
-	public Rental(int id, int price, String location, String description, String rentStartDate, String rentEndDate, String imageFName) {
+	public Rental(int id, int price, String location, String description, String rentedDates, String imageFName) {
 		this.id = id;
 		this.price = price;
 		this.location = location;
 		this.description = description;
-		this.rentStartDate = rentStartDate;
-		this.rentEndDate = rentEndDate;
+		this.rentedDates = rentedDates;
 		this.imageFName = imageFName;
 	}
 	
@@ -43,12 +40,8 @@ public class Rental {
 		return description;
 	}
 	
-	public String getRentStartDate() {
-		return rentStartDate;
-	}
-	
-	public String getRentEndDate() {
-		return rentEndDate;
+	public String getRentedDates() {
+		return rentedDates;
 	}
 	
 	public String getImageFName() {
@@ -67,17 +60,11 @@ public class Rental {
 		this.description = description;
 	}
 	
-	public void setRentStartDate(String rentStartDate) {
-		this.rentStartDate = rentStartDate;
-	}
-
-	public void setRentEndDate(String rentEndDate) {
-		this.rentEndDate = rentEndDate;
+	public void setRentedDates(String rentedDates) {
+		this.rentedDates = rentedDates;
 	}
 	
 	public void setImageFName(String imageFName) {
 		this.imageFName = imageFName;
 	}
-	
-	
 }

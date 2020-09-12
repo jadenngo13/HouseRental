@@ -18,20 +18,6 @@
 	crossorigin="anonymous">
 </head>
 <body>
-	<script>
-		var dates = ["2020-09-12", "2020-09-13", "2020-09-14"];
-		
-		function DisableDates(date) {
-		    var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-		    return [dates.indexOf(string) == -1];
-		}
-		 
-		$(function() {
-		     $(".rentalDates").datepicker({
-		         beforeShowDay: DisableDates
-		     });
-		});
-	</script>
 
 	<div class="topnav">
 		<a href="customerMain.jsp">Home</a> <a href="viewProfile.jsp">Your
@@ -48,12 +34,36 @@
 		<br>
 		<h5 style="text-align: center">${rentalDescription}</h5>
 		<h5 style="text-align: center">Location: ${rentalLocation}</h5>
+		<h6 style="text-align: center">Rent Now From: </h6>
 		<form action="<%=request.getContextPath()%>/rent" method="post"
 			style="text-align: center">
-			<input class="rentalDates" type="text" name="rentalEndDate" min="${rentalEndDate}" size="45"
-				value="${rentalEndDate}" /> 
-			<input class="rentalDates" type="text" name="rentalAvailDate" min="${rentalEndDate}" size="45"
-				 size="45" value="${rentalEndDate}"/> 
+			<p id="rented_dates" value="${rentedDatesString}">${rentedDatesString}</p> 
+			<script>
+				var dates = document.getElementById('rented_dates').innerHTML.split(',');
+				//var dates = ["2020-09-12","2020-09-20","2020-09-21","2020-09-22"];
+			
+				function DisableDates(date) {
+				    var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+				    return [dates.indexOf(string) == -1];
+				}
+				 
+				$(function() {
+				     $(".rentalDates").datepicker({
+				    	 dateFormat: "yy-mm-dd",
+				         showButtonPanel: true,
+				         changeMonth: true,
+				         changeYear: true,
+						 yearRange: '2020:2021',
+				         minDate: new Date(2020, 9 - 1, 11),
+				         beforeShowDay: DisableDates
+				     });
+				});		
+			</script>
+			<input class="rentalDates" type="text" name="rentalStartDate" min="${firstAvailDate}" size="45"
+				value="${firstAvailDate}" /> 
+				<h5> to </h5>
+			<input class="rentalDates" type="text" name="rentalEndDate" min="${firstAvailDate}" size="45"
+				 size="45" value="${firstAvailDate}"/> 
 			<input type="hidden" name="selectedRentalID" value="${rental.id}" /> 
 			<div class="rentButton" style="text-align: center">
 				<input type="submit" name="rent" value="Rent Now!" />
