@@ -19,37 +19,83 @@
 		<a href="${type1}Main.jsp">Home</a> <a href="viewProfile.jsp">Your Profile</a> <a class="active"
 			href="viewRentals.jsp">View Rentals</a> <a href="<%=request.getContextPath()%>/logout">Logout</a>
 	</div>
-	<div class="row">
-		<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
-
-		<div class="container">
-			<br>
-			<h3 class="text-center">Your Rentals</h3>
-			<hr>
-			<br>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>Number of Days</th>
-						<th>Location</th>
-						<th>Description</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="rental" items="${rentedRentals}">
-
+	
+	<c:if test="${type2 == 2}">
+		<div class="row">
+			<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
+	
+			<div class="container">
+				<br>
+				<h3 class="text-center">Your Rented Rentals</h3>
+				<hr>
+				<br>
+				<table class="table table-bordered">
+					<thead>
 						<tr>
-							<td><c:out value="10 Days Left" /></td>
-							<td><c:out value="${rental.location}" /></td>
-							<td><c:out value="${rental.description}" /></td>
-							<td><img  height="200px" width="400px" src="<c:out value="${rental.imageFName}"/>"/></td>
+							<th>Image</th>
+							<th>Location</th>
+							<th>Rentee</th>
+							<th>Dates</th>
+							<th>Info</th>
 						</tr>
-					</c:forEach>
-				</tbody>
-
-			</table>
+					</thead>
+					<tbody>
+						<c:forEach var="rental" items="${ownerRented}">
+	
+							<tr>
+								<td><img  height="200px" width="400px" src="<c:out value="${rental.imageFName}"/>"/></td>
+								<td><c:out value="${rental.location}" /></td>
+								<td><c:out value="${rental.rentee}" /></td>
+								<td><c:out value="${rental.startDate} to ${rental.endDate}" /></td>
+								<td><form action="<%=request.getContextPath()%>/viewForm" method="post">
+										<input type="hidden" name="selectedRentalForm" value="${rental.formID}"/> 
+										<div class="rentButton" style="text-align: center">
+											<input type="submit" name="viewForm" value="View Info"/>
+										</div>
+									</form>
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+	
+				</table>
+			</div>
 		</div>
-	</div>
+	</c:if>
+	
+	<c:if test="${type2 == 3}">
+		<div class="row">
+			<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
+	
+			<div class="container">
+				<br>
+				<h3 class="text-center">Your Rentals</h3>
+				<hr>
+				<br>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Number of Days</th>
+							<th>Location</th>
+							<th>Description</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="rental" items="${customerRentals}">
+	
+							<tr>
+								<td><c:out value="${rental.daysMsg}" /></td>
+								<td><c:out value="${rental.location}" /></td>
+								<td><c:out value="${rental.description}" /></td>
+								<td><img  height="200px" width="400px" src="<c:out value="${rental.imageFName}"/>"/></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+	
+				</table>
+			</div>
+		</div>
+	</c:if>
 </body>
 </html>

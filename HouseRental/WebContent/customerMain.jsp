@@ -26,7 +26,7 @@
 		<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
 
 		<div class="container">
-			<h3 class="text-center">Hello ${fname}</h3>
+			<h3 class="text-center">Hello ${user.firstName}</h3>
 			<h5 class="text-center">Your Adventure Starts Here</h5>
 			<hr>
 			<br>

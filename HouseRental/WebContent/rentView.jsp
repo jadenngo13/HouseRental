@@ -37,7 +37,7 @@
 		<h6 style="text-align: center">Rent Now From: </h6>
 		<form action="<%=request.getContextPath()%>/rent" method="post"
 			style="text-align: center">
-			<p id="rented_dates" value="${rentedDatesString}">${rentedDatesString}</p> 
+			<p id="rented_dates" value="${allRentedDatesString}">${allRentedDatesString}</p> 
 			<script>
 				var dates = document.getElementById('rented_dates').innerHTML.split(',');
 				//var dates = ["2020-09-12","2020-09-20","2020-09-21","2020-09-22"];

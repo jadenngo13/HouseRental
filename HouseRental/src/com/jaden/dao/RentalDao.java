@@ -1,6 +1,5 @@
 package com.jaden.dao;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,8 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.jaden.connection.DBConnection;
-import com.jaden.data.DatePair;
 import com.jaden.data.Rental;
+import com.jaden.data.RentalForm;
 import com.jaden.queries.SqlQueries;
 
 public class RentalDao {
@@ -28,12 +27,13 @@ public class RentalDao {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
+                int owner = rs.getInt("owner_id");
                 int price = rs.getInt("price");
                 String location = rs.getString("location");
                 String desc = rs.getString("description");
-                String rentedDates = rs.getString("rented_dates");
                 String imageFName = rs.getString("image_file_name");
-                rentals.add(new Rental(id, price, location, desc, rentedDates, imageFName));
+                System.out.println("id: " + id);
+                rentals.add(new Rental(id, owner, price, location, desc, imageFName));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,15 +41,17 @@ public class RentalDao {
         return rentals;
     }
 	
-	public List<Rental> selectAllRented(List<Integer> rentalIds) {
+	public List<Rental> selectAllRented(List<Integer> rentalIDs) {
 		List < Rental > rentals = new ArrayList < > ();
+		if (rentalIDs == null)
+			return rentals;
 	    try {
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalFromID);
-			for (int id : rentalIds) {
+			for (int id : rentalIDs) {
 				stmt.setInt(1, id);
 				rs = stmt.executeQuery();
 				if (rs.next()) {
-					rentals.add(new Rental(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)));
+					rentals.add(new Rental(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6)));
 				}
 			}
 		} catch (Exception e) {
@@ -98,18 +100,29 @@ public class RentalDao {
 		return "";
 	}
 	
+	public int getOwnerID(int id) {
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalOwnerID);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				return rs.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	public List<String> getRentedDates(int id) {
 		List<String> result = new ArrayList<>();
 		try {
-			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalRentedDates);
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalFormFromRentalID);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
 
-			if (rs.next()) {
-				String[] s = rs.getString(1).split("[\\|,]+");
-				for (int i = 0; i < s.length; i++) {
-					result.add(s[i]);
-				}
+			while (rs.next()) {
+				result.add(rs.getString(5));
+				result.add(rs.getString(6));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,27 +130,37 @@ public class RentalDao {
 		return result;
 	}
 	
+	public String getAllRentedDatesString(int id) {
+		try {
+			List<LocalDate> listOfDates = new ArrayList<>();
+			List<String> dates = getRentedDates(id);
+			for (int i = 0; i < dates.size()-1; i+=2) {
+				listOfDates.addAll(getDatesBetween(dates.get(i), dates.get(i+1)));
+			}
+
+			// Convert list back to string
+			String sb = formatRentedDates(listOfDates, "grab");
+			System.out.println(sb);
+			
+			return sb;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public String getRentedDatesString(int id) {
 		try {
-			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalRentedDates);
-			stmt.setInt(1, id);
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				String[] datesArr = rs.getString(1).replace("|", ",").split(",");
-				
-//				Get all dates that are unavailable to rent 
-//					based on starting and ending renting dates
-				List<LocalDate> listOfDates = new ArrayList<>();
-				for (int i = 0; i < datesArr.length; i+=2) {
-					listOfDates.addAll(getDatesBetween(datesArr[i], datesArr[i+1]));
-				}
-				
-				// Convert list back to string
-				String sb = formatRentedDates(listOfDates);
-				System.out.println(sb);
-				
-				return sb;
+			List<LocalDate> listOfDates = new ArrayList<>();
+			List<String> dates = getRentedDates(id);
+			for (String d : dates) {
+				listOfDates.add(LocalDate.parse(d));
 			}
+			// Convert list back to string
+			String result = formatRentedDates(listOfDates, "grab");
+			System.out.println(result);
+			
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -157,19 +180,19 @@ public class RentalDao {
 		return null;
 	}
 	
-	public void rentRental(int rentalID, String rented, String rentStart, String rentEnd, int custId) {
+	public void rentRental(int rentalID, String rented, String rentStart, String rentEnd, int custID, String custRentals, int ownerID) {
 		try {
-			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateRental);
-			String s = formatRentedDates(getDatesBetween(rentStart, rentEnd));
-			StringBuilder newRentedDates = new StringBuilder(rented);
-			newRentedDates.append(s);
-			stmt.setString(1, newRentedDates.toString());
-			stmt.setInt(2, rentalID);
-			stmt.execute();
+			RentalFormDAO rentalFormDAO = new RentalFormDAO();
+			RentalForm form = new RentalForm(rentalID, custID, ownerID, rentStart, rentEnd, 500);
+			rentalFormDAO.createRentalForm(form);
 			
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateCustomerRentals);
-			stmt.setInt(1, rentalID);
-			stmt.setInt(2, custId);
+			if (custRentals != null) {
+				stmt.setString(1, custRentals + "," + rentalID);
+			} else {
+				stmt.setInt(1, rentalID);
+			}
+			stmt.setInt(2, custID);
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -178,27 +201,38 @@ public class RentalDao {
 	
 	// Find first available rental date given string of all occupied dates
 	public String getFirstAvailDate(String dates) {
-		LocalDate curr = LocalDate.now();
-		LocalDate temp;
-		String[] datesArr = dates.split(",");
-		System.out.println("dates: " + Arrays.toString(datesArr));
-		for (int i = 0; i < datesArr.length; i++) {
-			temp = LocalDate.parse(datesArr[i]);
-			System.out.println("Compare: " + temp.toString() + " v. " + datesArr[i].toString());
-			if (curr.toString().equals(datesArr[i])) {
-				curr.plusDays(1);
-			} else {
-				return temp.toString();
+		System.out.println("dates: " + dates);
+		if (!dates.equals("")) {
+			LocalDate curr = LocalDate.now();
+			LocalDate temp;
+			String[] datesArr = dates.split(",");
+			System.out.println("dates: " + Arrays.toString(datesArr));
+			for (int i = 0; i < datesArr.length; i++) {
+				temp = LocalDate.parse(datesArr[i]);
+				System.out.println("Compare: " + temp.toString() + " v. " + datesArr[i].toString());
+				if (curr.toString().equals(datesArr[i])) {
+					curr.plusDays(1);
+				} else {
+					return temp.toString();
+				}
 			}
+			return curr.toString();
+		} else {
+			return "";
 		}
-		return curr.toString();
 	}
 	
-	// Format list of dates to be inserting into db
-	public String formatRentedDates(List<LocalDate> dates) {
+	// Format list of dates to be grabbed from and inserted into db
+	public String formatRentedDates(List<LocalDate> dates, String type) {
 		StringBuilder result = new StringBuilder();
-		for (LocalDate d : dates) {
-			result.append(d.toString() + ",");
+		switch(type) {
+		case "grab":
+			for (LocalDate d : dates) 
+				result.append(d.toString() + ",");
+			break;
+		default:
+			System.out.println("Incorrect type given for string format.");
+			break;
 		}
 		return result.toString();
 	}

@@ -157,4 +157,33 @@ public class LoginDao {
 		}
 		return null;	
 	}
+	
+
+	public String getUsername(int id, String type) {
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetUserUsername);
+			stmt.setInt(1, id);
+			stmt.setString(2, type);
+			rs = stmt.executeQuery();
+			if (rs.next()) 
+				return rs.getString(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;	
+	}
+	
+	public String getPassword(int id, String type) {
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetUserPassword);
+			stmt.setInt(1, id);
+			stmt.setString(2, type);
+			rs = stmt.executeQuery();
+			if (rs.next()) 
+				return rs.getString(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;	
+	}
 }

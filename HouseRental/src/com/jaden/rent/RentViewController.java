@@ -51,6 +51,7 @@ public class RentViewController extends HttpServlet {
 		String firstAvailRentDate;
 		List<String> rentedDates;
 		String rentedDatesString;
+		String allRentedDatesString;
 		
 		price = rentalDAO.getPrice(id);
 		location = rentalDAO.getLocation(id);
@@ -66,7 +67,9 @@ public class RentViewController extends HttpServlet {
 		
 		rentedDates = rentalDAO.getRentedDates(id);
 		rentedDatesString = rentalDAO.getRentedDatesString(id);
-		firstAvailRentDate = rentalDAO.getFirstAvailDate(rentedDatesString);
+		allRentedDatesString = rentalDAO.getAllRentedDatesString(id);
+		firstAvailRentDate = rentalDAO.getFirstAvailDate(allRentedDatesString);
+		System.out.println("info: " + id + " " + price + " " + location + " " + desc + " " + rentedDates);
 		System.out.println("first avail: " + firstAvailRentDate);
 		
 		session.setAttribute("rentalID", id);
@@ -79,6 +82,7 @@ public class RentViewController extends HttpServlet {
 		session.setAttribute("firstAvailDate", firstAvailRentDate);
 		session.setAttribute("rentedDates", rentedDates);
 		session.setAttribute("rentedDatesString", rentedDatesString);
+		session.setAttribute("allRentedDatesString", allRentedDatesString);
 		
 		
 		response.sendRedirect("rentView.jsp");

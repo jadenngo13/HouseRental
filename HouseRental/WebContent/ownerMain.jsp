@@ -26,7 +26,7 @@
 		<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
 
 		<div class="container">
-			<h3 class="text-center">Welcome ${name}</h3>
+			<h3 class="text-center">Welcome ${user.firstName}</h3>
 			<h5 class="text-center">Creating Adventures Starts Here</h5>
 			<hr>
 			<div class="container text-left">
@@ -49,8 +49,8 @@
 					<c:forEach var="rental" items="${listRentals}">
 
 						<tr>
-							<td><c:out value="${rental.imageFName}" /></td>
-							<td><c:out value="${rental.price}" /></td>
+							<td><img  height="200px" width="400px" src="<c:out value="${rental.imageFName}"/>"/></td>
+							<td><c:out value="$ ${rental.price}" /></td>
 							<td><c:out value="${rental.location}" /></td>
 							<td><c:out value="${rental.description}" /></td>
 							<td><a href="edit?id=<c:out value='${rental.id}' />">Edit</a>

@@ -14,13 +14,13 @@
 </head>
 <body>
 	<div class="topnav">
-		<c:if test="${type == 'admins'}">
+		<c:if test="${user.userType == 'admins'}">
 			<a href="adminMain.jsp">Home</a>
 			<a class="active" href="viewProfile.jsp">Your Profile</a>
 			<a href="<%=request.getContextPath()%>/list">View Users</a>
 			<a href="<%=request.getContextPath()%>/logout">Logout</a>
 		</c:if>
-		<c:if test="${type ne 'admins'}"> <a href="${type1}Main.jsp">Home</a> 
+		<c:if test="${user.userType ne 'admins'}"> <a href="${type1}Main.jsp">Home</a> 
 			<a class="active" href="viewProfile.jsp">Your Profile</a> 
 			<a href="viewRentals.jsp">View Rentals</a> 
 			<a href="<%=request.getContextPath()%>/logout">Logout</a>
@@ -47,27 +47,27 @@
 				<tr>
 					<th>First Name:</th>
 					<td><input type="text" name="fname" size="45"
-						value="<c:out value='${fname}' />" /></td>
+						value="<c:out value='${user.firstName}' />" /></td>
 				</tr>
 				<tr>
 					<th>Last Name:</th>
 					<td><input type="text" name="lname" size="45"
-						value="<c:out value='${lname}' />" /></td>
+						value="<c:out value='${user.lastName}' />" /></td>
 				</tr>
 				<tr>
 					<th>Username:</th>
 					<td><input type="text" name="uname" size="45"
-						value="<c:out value='${username}' />" /></td>
+						value="<c:out value='${user.username}' />" /></td>
 				</tr>
 				<tr>
 					<th>User Email:</th>
 					<td><input type="text" name="email" size="45"
-						value="<c:out value='${email}' />" /></td>
+						value="<c:out value='${user.email}' />" /></td>
 				</tr>
 				<tr>
 					<th>Birthday:</th>
 					<td><input type="date" name="birthday" size="45"
-						value="<c:out value='${birthday}' />" /></td>
+						value="<c:out value='${user.bday}' />" /></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center"><input type="submit"

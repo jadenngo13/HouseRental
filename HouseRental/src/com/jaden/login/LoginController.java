@@ -1,9 +1,6 @@
 package com.jaden.login;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,16 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.jaden.connection.DBConnection;
+import com.jaden.dao.CustomerDAO;
 import com.jaden.dao.LoginDao;
+import com.jaden.dao.OwnerDAO;
 import com.jaden.dao.RentalDao;
 import com.jaden.dao.UserDAO;
-import com.jaden.data.DatePair;
+import com.jaden.data.User;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LoginDao loginDAO;
 	private UserDAO userDAO;
+	private OwnerDAO ownerDAO;
+	private CustomerDAO custDAO;
 	private RentalDao rentalDAO;
 	
 	public void init() {
@@ -32,39 +33,32 @@ public class LoginController extends HttpServlet {
 		loginDAO = new LoginDao();
 		rentalDAO = new RentalDao();
 		userDAO = new UserDAO();
+		custDAO = new CustomerDAO();
+		ownerDAO = new OwnerDAO();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String uname = request.getParameter("uname");
 		String pass = request.getParameter("pass");
-		int userID;
-		String firstName;
-		String lastName;
-		String userType;
-		String email;
-		String bday;
-		
+		User user = new User(null, null, null, null, null, null, null, null);
+
 		try {
 			if (loginDAO.check(uname, pass)) {
-				userType = loginDAO.getType(uname, pass);
-				userID = loginDAO.getID(uname, pass);
-				firstName = loginDAO.getFirstName(userID, userType);
-				lastName = loginDAO.getLastName(userID, userType);
-				email = loginDAO.getEmail(userID, userType);
-				bday = loginDAO.getBirthday(userID, userType);
+				user.setId(loginDAO.getID(uname, pass));
+				user.setUserType(loginDAO.getType(uname, pass));
+				user.setFirstName(loginDAO.getFirstName(user.getId(), user.getUserType()));
+				user.setLastName(loginDAO.getLastName(user.getId(), user.getUserType()));
+				user.setBday(loginDAO.getBirthday(user.getId(), user.getUserType()));
+				user.setEmail(loginDAO.getEmail(user.getId(), user.getUserType()));
+				user.setUsername(loginDAO.getUsername(user.getId(), user.getUserType()));
+				user.setPassword(loginDAO.getPassword(user.getId(), user.getUserType()));
+				user.setRentals(custDAO.getRentedString(user.getId()));
 				
 				HttpSession session = request.getSession();
-				session.setAttribute("id", userID);
-				session.setAttribute("username", uname);
-				session.setAttribute("password", pass);
-				session.setAttribute("fname", firstName);
-				session.setAttribute("lname", lastName);
-				session.setAttribute("type", userType);
-				session.setAttribute("type1", userType.substring(0, userType.length()-1));
-				session.setAttribute("email", email);
-				session.setAttribute("birthday", bday);
+				session.setAttribute("user", user);
+				session.setAttribute("type1", user.getUserType().substring(0, user.getUserType().length()-1));
 				
-				switch (userType) {
+				switch (user.getUserType()) {
 				case "admins":
 					int[] data = userDAO.getNumUsers();
 					session.setAttribute("numUsers", data[0]);
@@ -73,16 +67,23 @@ public class LoginController extends HttpServlet {
 					session.setAttribute("numRentals", data[3]);
 					session.setAttribute("numRented", data[4]);
 					session.setAttribute("tab", 1);
+					session.setAttribute("type2", 1);
 					response.sendRedirect("adminMain.jsp");
 					break;
 				case "owners":
+					session.setAttribute("listRentals", ownerDAO.getRentals(user.getId()));
+					session.setAttribute("ownerRented", ownerDAO.getRented(user.getId()));
 					session.setAttribute("tab", 0);
+					session.setAttribute("type2", 2);
 					response.sendRedirect("ownerMain.jsp");
 					break;
 				case "customers":
-					// get all rentals that are being rented by customer
+					custDAO.updateRentals(user);
+					session.setAttribute("customerRentals", custDAO.getCustomerRentals(user.getId()));
+					session.setAttribute("customerRentalsString", user.getRentals());
 					session.setAttribute("listRentals", rentalDAO.selectAllRentals());
 					session.setAttribute("tab", 0);
+					session.setAttribute("type2", 3);
 					response.sendRedirect("customerMain.jsp");
 					break;
 				default:
