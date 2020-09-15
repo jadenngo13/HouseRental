@@ -36,6 +36,7 @@
 							<th>Location</th>
 							<th>Description</th>
 							<th></th>
+							<th>Owner Info</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -46,6 +47,13 @@
 								<td><c:out value="${rental.location}" /></td>
 								<td><c:out value="${rental.description}" /></td>
 								<td><img  height="200px" width="400px" src="<c:out value="${rental.imageFName}"/>"/></td>
+								<td><form action="<%=request.getContextPath()%>/viewOwner" method="post">
+										<input type="hidden" name="rentalID" value="${rental.id}"/> 
+										<div class="rentButton">
+											<input type="submit" width="100" name="viewOwner" value="Owner Info"/>
+										</div>
+									</form>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>

@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 import com.jaden.connection.DBConnection;
 import com.jaden.data.Rental;
 import com.jaden.data.User;
-import com.jaden.queries.SqlQueries;
+import com.jaden.sql.SqlQueries;
 
 public class CustomerDAO {
-	private PreparedStatement stmt, stmt1;
-	private ResultSet rs, rs1;
+	private PreparedStatement stmt;
+	private ResultSet rs;
 	private RentalDao rentalDAO;
 	
 	public User getCustomer(int id) {
@@ -62,7 +62,6 @@ public class CustomerDAO {
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Rental temp = new Rental(rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getString(8), rs.getString(9));
-				System.out.println("rental form dates: " + rs.getString(2) + " - " + rs.getString(3));
 				temp.setDaysMsg(getDaysLeftString(rs.getString(2), rs.getString(3)));
 				result.add(temp);
 			}

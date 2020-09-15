@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import com.jaden.connection.DBConnection;
-import com.jaden.queries.SqlQueries;
+import com.jaden.sql.SqlQueries;
 
 public class ProfileDAO {
 	PreparedStatement stmt;

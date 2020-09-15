@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.jaden.connection.DBConnection;
-import com.jaden.queries.SqlQueries;
+import com.jaden.sql.SqlQueries;
 
 public class LoginDao {
 

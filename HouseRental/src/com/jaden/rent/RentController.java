@@ -1,6 +1,7 @@
 package com.jaden.rent;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,10 +22,13 @@ public class RentController extends HttpServlet {
 	private RentalDao rentalDAO;
 	private CustomerDAO custDAO;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+	public void init() {
 		rentalDAO = new RentalDao();
 		custDAO = new CustomerDAO();
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		
 		int rentalID = (int)session.getAttribute("rentalID");
 		User user = (User)session.getAttribute("user");
@@ -39,17 +43,23 @@ public class RentController extends HttpServlet {
 		if (e.isBefore(s) && !rentalDAO.checkDateInterfere(rentedDates, rentStart, rentEnd)) {
 			System.out.println("Incorrect Date.");
 		} else {
-			System.out.println("rent controller: " + rentedDates + " " + user.getId() + " " + rentStart + " " + rentEnd);
 			rentalDAO.rentRental(rentalID,  (rentedDates != null) ? rentedDates : "", rentStart, rentEnd, user.getId(), custRentalsString, ownerID);
 			
-			// Refresh "customerRentalsString" variable
+			// Refresh customer
 			try {
-				session.setAttribute("customerRentalsString", custDAO.getRentedString(user.getId()));
-			} catch (Exception ex) {
-				ex.printStackTrace();
+				refreshCustomer(request, response, user);
+			} catch (SQLException e1) {
+				e1.printStackTrace();
 			}
 			
 			response.sendRedirect("customerMain.jsp");
 		}
+	}
+	
+	private void refreshCustomer(HttpServletRequest request, HttpServletResponse response, User user) throws SQLException {
+		HttpSession session = request.getSession();
+		session.setAttribute("customerRentals", custDAO.getCustomerRentals(user.getId()));
+		session.setAttribute("customerRentalsString", custDAO.getRentedString(user.getId()));
+		session.setAttribute("listRentals", rentalDAO.selectAllRentals());
 	}
 }

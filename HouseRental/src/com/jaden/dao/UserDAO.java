@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jaden.connection.DBConnection;
-import com.jaden.data.Rental;
 import com.jaden.data.User;
-import com.jaden.queries.SqlQueries;
+import com.jaden.sql.SqlQueries;
 
 public class UserDAO {
 	private PreparedStatement stmt, stmt1;

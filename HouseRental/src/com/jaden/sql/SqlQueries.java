@@ -1,4 +1,4 @@
-package com.jaden.queries;
+package com.jaden.sql;
 
 public class SqlQueries {
 	
@@ -9,7 +9,7 @@ public class SqlQueries {
 	public final static String sqlGetAllOwners = "SELECT * FROM owners";
 	public final static String sqlGetAllCustomers = "SELECT * FROM customers";
 	public final static String sqlGetAllRentals = "SELECT * FROM rentals";
-	public final static String sqlGetOwnerFromID = "SELECT * FROM customers WHERE id=?";
+	public final static String sqlGetOwnerFromID = "SELECT * FROM owners WHERE id=?";
 	public final static String sqlGetCustomerFromID = "SELECT * FROM customers WHERE id=?";
 	public final static String sqlGetRentalFromID = "SELECT * FROM rentals WHERE id=?";
 	

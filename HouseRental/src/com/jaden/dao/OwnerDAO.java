@@ -11,12 +11,28 @@ import java.util.stream.Collectors;
 import com.jaden.connection.DBConnection;
 import com.jaden.data.Rental;
 import com.jaden.data.RentalForm;
-import com.jaden.queries.SqlQueries;
+import com.jaden.data.User;
+import com.jaden.sql.SqlQueries;
 
 public class OwnerDAO {
-	private PreparedStatement stmt, stmt1;
-	private ResultSet rs, rs1;
+	private PreparedStatement stmt;
+	private ResultSet rs;
 	private RentalDao rentalDAO;
+	
+	public User getOwner(int id) {
+		try {
+			System.out.println("id seraching for: " + id);
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerFromID);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), "owners", null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("we didnt get one");
+		return null;
+	}
 	
 	public List<Rental> getRentals(int id) throws SQLException {
 		List<Rental> result =  new ArrayList<>();
@@ -27,7 +43,6 @@ public class OwnerDAO {
 		stmt.setInt(1, id);
 		rs = stmt.executeQuery();
 		if (rs.next() && rs.getString(1) != null) {
-			System.out.println("get rentals: " + rs.getString(1));
 			ids = Arrays.stream(rs.getString(1).split(","))
 			        .map(Integer::parseInt)
 			        .collect(Collectors.toList());

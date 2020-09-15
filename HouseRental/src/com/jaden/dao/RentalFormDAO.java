@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 
 import com.jaden.connection.DBConnection;
 import com.jaden.data.RentalForm;
-import com.jaden.queries.SqlQueries;
+import com.jaden.sql.SqlQueries;
 
 public class RentalFormDAO {
 	private PreparedStatement stmt;

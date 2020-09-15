@@ -13,7 +13,7 @@ import com.jaden.connection.DBConnection;
 import com.jaden.data.Rental;
 import com.jaden.data.RentalForm;
 import com.jaden.data.User;
-import com.jaden.queries.SqlQueries;
+import com.jaden.sql.SqlQueries;
 
 public class RentalDao {
 	PreparedStatement stmt;
@@ -125,6 +125,21 @@ public class RentalDao {
 			e.printStackTrace();
 		}
 		return -1;
+	}
+	
+	public User getOwner(int id) {
+		int ownerID = getOwnerID(id);
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerFromID);
+			stmt.setInt(1, ownerID);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), "owners", null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	public List<String> getRentedDates(int id) {
@@ -298,6 +313,7 @@ public class RentalDao {
 			
 			// Update owner's rentals
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateOwnerRentals);
+			System.out.println("insert into rentals: " + owner.getRentals() + " + " + newRental.getId());
 			stmt.setString(1, owner.getRentals() + "," + newRental.getId());
 			stmt.setInt(2, owner.getId());
 			stmt.execute();
@@ -332,15 +348,13 @@ public class RentalDao {
 			List<User> allRenters = getRenters(toDel, "all");
 			if (currRenters.size() <= 0) {
 				for (User u : allRenters) {
-					int idx = -1;
-					StringBuilder sb = new StringBuilder(u.getRentals());
-					for (int i = 0; i < sb.length(); i++) {
-						if (Character.getNumericValue(sb.charAt(i)) == toDel.getId()) {
-							idx = i;
-						}
+					
+					String[] r = u.getRentals().split(",");
+					StringBuilder sb = new StringBuilder();
+					for (int i = 0; i < r.length; i++) {
+						if (!r[i].equals(Integer.toString(toDel.getId())));
+							sb.append(r[i] + ',');
 					}
-					if (idx >= 0)
-						sb.deleteCharAt(idx);
 					
 					stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateCustomerRentals);
 					stmt.setString(1, sb.toString());
@@ -359,7 +373,6 @@ public class RentalDao {
 			stmt.execute();
 			
 			// Update owner
-			System.out.println("before: " + owner.getRentals());
 			int idx = 0;
 			String[] r = owner.getRentals().split(",");
 			StringBuilder sb = new StringBuilder();
@@ -367,8 +380,6 @@ public class RentalDao {
 				if (!r[i].equals(Integer.toString(toDel.getId())));
 					sb.append(r[i] + ',');
 			}
-		
-			System.out.println("after: " + sb.toString());
 			
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateOwnerRentals);
 			stmt.setString(1, sb.toString());
