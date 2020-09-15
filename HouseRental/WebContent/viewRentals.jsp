@@ -49,8 +49,8 @@
 								<td><img  height="200px" width="400px" src="<c:out value="${rental.imageFName}"/>"/></td>
 								<td><form action="<%=request.getContextPath()%>/viewOwner" method="post">
 										<input type="hidden" name="rentalID" value="${rental.id}"/> 
-										<div class="rentButton">
-											<input type="submit" width="100" name="viewOwner" value="Owner Info"/>
+										<div class="infoButton">
+											<input class="submitButton" type="submit" width="100" name="viewOwner" value="Owner Info"/>
 										</div>
 									</form>
 								</td>

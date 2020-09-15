@@ -15,9 +15,9 @@
 <body>
 	<div class="topnav">
 		<c:if test="${user.userType == 'admins'}">
-			<a href="adminMain.jsp">Home</a>
+			<a href="<%=request.getContextPath()%>/ahome">Home</a>
 			<a class="active" href="viewProfile.jsp">Your Profile</a>
-			<a href="<%=request.getContextPath()%>/list">View Users</a>
+			<a href="<%=request.getContextPath()%>/alist">View Users</a>
 			<a href="<%=request.getContextPath()%>/logout">Logout</a>
 		</c:if>
 		<c:if test="${user.userType == 'owners'}"> <a href="<%=request.getContextPath()%>/ohome">Home</a> 
@@ -75,7 +75,7 @@
 						value="<c:out value='${user.bday}' />" /></td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center"><input type="submit"
+					<td colspan="2" align="center"><input class="submitButton" type="submit"
 						value="Save" /></td>
 				</tr>
 			</table>

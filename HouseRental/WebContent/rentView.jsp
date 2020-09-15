@@ -37,7 +37,7 @@
 		<h6 style="text-align: center">Rent Now From: </h6>
 		<form action="<%=request.getContextPath()%>/rent" method="post"
 			style="text-align: center">
-			<p id="rented_dates" value="${allRentedDatesString}">${allRentedDatesString}</p> 
+			<p id="rented_dates" class="hide" value="${allRentedDatesString}">${allRentedDatesString}</p> 
 			<script>
 				var dates = document.getElementById('rented_dates').innerHTML.split(',');
 				//var dates = ["2020-09-12","2020-09-20","2020-09-21","2020-09-22"];
@@ -64,10 +64,9 @@
 				<h5> to </h5>
 			<input class="rentalDates" type="text" name="rentalEndDate" min="${firstAvailDate}" size="45"
 				 size="45" value="${firstAvailDate}"/> 
+				 <br><br>
 			<input type="hidden" name="selectedRentalID" value="${rental.id}" /> 
-			<div class="rentButton" style="text-align: center">
-				<input type="submit" name="rent" value="Rent Now!" />
-			</div>	
+			<input class="rentButton" type="submit" name="rent" value="Rent Now!" />
 		</form>
 		<br>
 	</div>

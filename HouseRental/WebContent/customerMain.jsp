@@ -45,14 +45,13 @@
 
 						<tr>
 							<td><img  height="200px" width="400px" src="<c:out value="${rental.imageFName}"/>"/></td>
-						<%-- 	<td><c:out value="${rental.imageFName}" /></td> --%>
 							<td><c:out value="$ ${rental.price}" /></td>
 							<td><c:out value="${rental.location}" /></td>
 							<td><c:out value="${rental.description}" /></td>
 							<td><div class="container text-left">
 							<form action="<%=request.getContextPath()%>/rentView" method="get"> 
 								<input type="hidden" name="selectedRentalID" value="${rental.id}" />
-   								<input type="submit" name="rent" value="Start My Adventure!" /> 
+   								<input class="submitButton" type="submit" name="rent" value="Start My Adventure!" /> 
 
 
 							<%-- <a href="<%=request.getContextPath()%>/rent"

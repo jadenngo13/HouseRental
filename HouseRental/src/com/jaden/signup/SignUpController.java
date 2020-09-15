@@ -24,7 +24,6 @@ public class SignUpController extends HttpServlet {
 		String pass1 = request.getParameter("pass1");
 		String email = request.getParameter("email");
 		String type = request.getParameter("type");
-		System.out.println("type: " + type);
 		
 		if (!pass.equals(pass1)) {
 			System.out.println("Passwords do not match.");

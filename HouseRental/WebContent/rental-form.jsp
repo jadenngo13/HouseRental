@@ -68,7 +68,7 @@
 						value="<c:out value='${rental.imageFName}' />" 
 						placeholder="Enter Image URL" name="image" required="required">
 				</fieldset>
-				<button type="submit" class="btn btn-success">Save</button>
+				<button class="submitButton" type="submit" class="btn btn-success">Save</button>
 				</form>
 			</div>
 		</div>

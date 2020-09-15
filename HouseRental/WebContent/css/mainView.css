@@ -27,14 +27,6 @@
   color: white;
 }
 
-input[type=submit] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
-  background-color:#f6d601;
-}
-
 img {
   display: block;
   margin-left: auto;
@@ -42,6 +34,24 @@ img {
   border-radius: 8px;
 }
 
+.submitButton {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  background-color:#f6d601;
+} 
+
 .rentButton {
-  width:50%;
+  padding: 16px 32px;
+  background-color:#f6d601;
+  width:25%;
+}
+
+.infoButton {
+  width:100%;
+}
+
+.hide {
+  display:none;
 }

@@ -98,8 +98,8 @@
 								<td><c:out value="${rental.startDate} to ${rental.endDate}" /></td>
 								<td><form action="<%=request.getContextPath()%>/viewForm" method="post">
 										<input type="hidden" name="selectedRentalForm" value="${rental.formID}"/> 
-										<div class="rentButton">
-											<input type="submit" width="100" name="viewForm" value="View Contract"/>
+										<div class="infoButton">
+											<input class="submitButton" type="submit" width="100" name="viewForm" value="View Contract"/>
 										</div>
 									</form>
 								</td>

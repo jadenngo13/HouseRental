@@ -2,42 +2,32 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+<style>
+	<%@ include file="css/login.css"%>
+</style>
 <head>
-<meta charset="UTF-8">
-<title>Sign Up</title>
+<meta charset="ISO-8859-1">
+<title>Sign Up Form</title>
 </head>
 <body>
-	<div class="sign-up" align="center">
-	<h1>Sign Up</h1>
-	<a href="login.jsp">Sign In</a>
-		<form action="signUp" method="post">
-			<table style="with: 100%">
-				<tr>
-					<td>Username</td>
-					<td><input type="text" name="uname" /></td>
-				</tr>
-				<tr>
-					<td>Password</td>
-					<td><input type="password" name="pass" /></td>
-				</tr>
-				<tr>
-					<td>Repeat Password</td>
-					<td><input type="password" name="pass1" /></td>
-				</tr>
-				<tr>
-					<td>Email</td>
-					<td><input type="text" name="email" /></td>
-				</tr>
-				<tr>
-					<td><select class="select-css" id="select-css" name="type">
-							<option value="customers">Customer</option>
-							<option value="owners">Owner</option>
-					</select></td>
-				</tr>
-
-			</table>
-			<input type="submit" value="Submit" />
-		</form>
+	<div class="wrapper fadeInDown">
+ 		<div id="formContent">
+    		<a href="login.jsp" class="inactive underlineHover""> Sign In </a>
+   			<h2 class="active">Sign Up</h2>
+   			<br><br>
+			<form action="<%=request.getContextPath()%>/signUp" method="post">
+	     		 <input type="text" class="fadeIn second" name="uname" placeholder="Username">
+	     		 <input type="password" class="fadeIn third" name="pass" placeholder="Password">
+	     		 <input type="password" class="fadeIn second" name="pass1" placeholder="Repeat Password">
+	     		 <input type="text"class="fadeIn third" name="email" placeholder="Email">
+	     		 <select class="select-css" name="type">
+					 <option value="customers">Customer</option>
+					 <option value="owners">Owner</option>
+				 </select>
+				 <br><br>
+	     	 	 <input type="submit" class="fadeIn fourth" value="Sign Up">
+	    	</form>
+  		</div>
 	</div>
 </body>
 </html>

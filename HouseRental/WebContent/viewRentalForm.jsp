@@ -80,7 +80,7 @@
 						value="<c:out value='$ ${rentalForm.price}' />" /></td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center"><input type="submit"
+					<td colspan="2" align="center"><input class="submitButton" type="submit"
 						value="Close" /></td>
 				</tr>
 			</table>

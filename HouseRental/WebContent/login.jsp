@@ -2,29 +2,26 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-
+<style>
+	<%@ include file="css/login.css"%>
+</style>
 <head>
 <meta charset="ISO-8859-1">
 <title>Login Form</title>
 </head>
 <body>
-	<div class="login-in" align="center">
-		<h1>Login Form</h1>
-		<a href="signUp.jsp">Sign Up</a>
-		<form action="<%=request.getContextPath()%>/login" method="post">
-			<table style="with: 100%">
-				<tr>
-					<td>Username</td>
-					<td><input type="text" name="uname" /></td>
-				</tr>
-				<tr>
-					<td>Password</td>
-					<td><input type="password" name="pass" /></td>
-				</tr>
-			</table>
-			<input type="submit" value="Login"/>
-		</form>
+	<div class="wrapper fadeInDown">
+ 		<div id="formContent">
+    		<h2 class="active"> Sign In </h2>
+   			<a href="signUp.jsp" class="inactive underlineHover">Sign Up</a>
+   			<br><br>
+			<form action="<%=request.getContextPath()%>/login" method="post">
+	     		 <input type="text" class="fadeIn second" name="uname" placeholder="username">
+	     		 <input type="password" class="fadeIn third" name="pass" placeholder="password">
+	     		 <br><br>
+	     	 	 <input type="submit" class="fadeIn fourth" value="Log In">
+	    	</form>
+  		</div>
 	</div>
 </body>
-
 </html>

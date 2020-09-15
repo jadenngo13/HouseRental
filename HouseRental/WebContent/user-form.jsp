@@ -87,7 +87,7 @@
 						name="pass" required="required">
 				</fieldset>
 
-				<button type="submit" class="btn btn-success">Save</button>
+				<button class="submitButton" type="submit" class="btn btn-success">Save</button>
 				</form>
 			</div>
 		</div>
