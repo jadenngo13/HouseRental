@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,6 @@ public class RentalDao {
                 String location = rs.getString("location");
                 String desc = rs.getString("description");
                 String imageFName = rs.getString("image_file_name");
-                System.out.println("id: " + id);
                 rentals.add(new Rental(id, owner, price, location, desc, imageFName));
             }
         } catch (SQLException e) {
@@ -169,7 +167,6 @@ public class RentalDao {
 
 			// Convert list back to string
 			String sb = formatRentedDates(listOfDates, "grab");
-			System.out.println(sb);
 			
 			return sb;
 		} catch (Exception e) {
@@ -187,7 +184,6 @@ public class RentalDao {
 			}
 			// Convert list back to string
 			String result = formatRentedDates(listOfDates, "grab");
-			System.out.println("formatted rentedstring: " + result);
 		
 			return result;
 		} catch (Exception e) {
@@ -230,15 +226,12 @@ public class RentalDao {
 	
 	// Find first available rental date given string of all occupied dates
 	public String getFirstAvailDate(String dates) {
-		System.out.println("dates: " + dates);
 		if (!dates.equals("")) {
 			LocalDate curr = LocalDate.now();
 			LocalDate temp;
 			String[] datesArr = dates.split(",");
-			System.out.println("dates: " + Arrays.toString(datesArr));
 			for (int i = 0; i < datesArr.length; i++) {
 				temp = LocalDate.parse(datesArr[i]);
-				System.out.println("Compare: " + temp.toString() + " v. " + datesArr[i].toString());
 				if (curr.toString().equals(datesArr[i])) {
 					curr.plusDays(1);
 				} else {
@@ -313,7 +306,6 @@ public class RentalDao {
 			
 			// Update owner's rentals
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateOwnerRentals);
-			System.out.println("insert into rentals: " + owner.getRentals() + newRental.getId() + ",");
 			stmt.setString(1, owner.getRentals() + newRental.getId() + ",");
 			stmt.setInt(2, owner.getId());
 			stmt.execute();
@@ -350,7 +342,6 @@ public class RentalDao {
 				for (User u : allRenters) {
 					
 					String[] r = u.getRentals().split(",");
-				//	System.out.println("we have split the rental string: " + Arrays.toString(r));
 					StringBuilder sb = new StringBuilder();
 					for (int i = 0; i < r.length; i++) {
 						if (!r[i].equals(Integer.toString(toDel.getId())));
@@ -366,7 +357,6 @@ public class RentalDao {
 				System.out.println("Cannot delete rental for it is currently being rented.");
 				return;
 			}
-			System.out.println("we are deleting");
 			
 			// Delete rental forms
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlDeleteRentalFormFromRentalID);
@@ -374,16 +364,12 @@ public class RentalDao {
 			stmt.execute();
 			
 			// Update owner
-			System.out.println("before split in delete: " + owner.getRentals());
 			String[] r = owner.getRentals().split(",");
-			System.out.println("we have split the rental string: " + Arrays.toString(r));
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < r.length; i++) {
-				System.out.println("r[i]: " + r[i] + " vs toDel: " + toDel.getId());
-				if (!r[i].equals(Integer.toString(toDel.getId()))) {
+				if (!r[i].equals(Integer.toString(toDel.getId()))) 
 					sb.append(r[i] + ',');
-					System.out.println("not equal so adding");
-				}
+				
 			}
 			
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateOwnerRentals);

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.jaden.dao.CustomerDAO;
 import com.jaden.dao.OwnerDAO;
 import com.jaden.dao.RentalDao;
 import com.jaden.dao.UserDAO;
@@ -172,7 +171,6 @@ public class MainController extends HttpServlet {
     /***** Owner Main *****/
     private void listRental(HttpServletRequest request, HttpServletResponse response)
     throws SQLException, IOException, ServletException {
-        System.out.println("refreshed");
         RequestDispatcher dispatcher = request.getRequestDispatcher("ownerMain.jsp");
         dispatcher.forward(request, response);
     }
@@ -201,7 +199,6 @@ public class MainController extends HttpServlet {
         String image = request.getParameter("image");
         Rental newRental = new Rental(owner.getId(), price, location, description, image);
         rentalDAO.insertRental(owner, newRental);
-        System.out.println("finished inserting");
         owner = refreshOwner(request, response, owner.getId());
         response.sendRedirect("olist");
     }

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.jaden.dao.OwnerDAO;
 import com.jaden.dao.RentalDao;
 import com.jaden.data.User;
 
@@ -27,7 +26,6 @@ public class ViewOwner extends HttpServlet {
 		HttpSession session = request.getSession();
 		int rentalID = Integer.parseInt(request.getParameter("rentalID"));
 		owner = rentalDAO.getOwner(rentalID);
-		System.out.println(owner.getId() + " " + owner.getFirstName());
 		session.setAttribute("owner", owner);
 		
 		response.sendRedirect("viewOwner.jsp");

@@ -4,9 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.jaden.connection.DBConnection;
 import com.jaden.data.Rental;
@@ -21,12 +19,10 @@ public class OwnerDAO {
 	
 	public User getOwner(int id) {
 		try {
-			System.out.println("id seraching for: " + id);
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerFromID);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
 			if (rs.next()) {
-				System.out.println("owners rentals: " + rs.getString(6));
 				return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), "owners", null, null);
 			}
 		} catch (Exception e) {
@@ -40,7 +36,6 @@ public class OwnerDAO {
 		List<Integer> ids =  new ArrayList<>();
 		
 		// Get ids of all rentals
-		System.out.println("HERE");
 		stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerRentals);
 		stmt.setInt(1, id);
 		rs = stmt.executeQuery();
@@ -49,15 +44,9 @@ public class OwnerDAO {
 			for (String s : arr)
 				ids.add(Integer.parseInt(s));
 		}
-		for (int i : ids) {
-			System.out.println("id: " + i);
-		}
 		// Get all rental objects
 		rentalDAO = new RentalDao();
 		result = rentalDAO.selectAllRented(ids);
-		for (Rental r : result) {
-			System.out.println("rental: " + r.getId());
-		}
 		
 		return result;
 	}

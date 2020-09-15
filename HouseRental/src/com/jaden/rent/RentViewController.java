@@ -3,7 +3,6 @@ package com.jaden.rent;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class RentViewController extends HttpServlet {
 	private DateTimeFormatter formatter;
 	private LocalDateTime today;
 	private Date dt;
-	private LocalDate tdy, tmmr, twoDays;
+	private LocalDate tdy, tmmr;
 
 	public void init(ServletConfig config) throws ServletException {
 		rentalDAO = new RentalDao();
@@ -69,8 +68,6 @@ public class RentViewController extends HttpServlet {
 		rentedDatesString = rentalDAO.getRentedDatesString(id);
 		allRentedDatesString = rentalDAO.getAllRentedDatesString(id);
 		firstAvailRentDate = rentalDAO.getFirstAvailDate(allRentedDatesString);
-		System.out.println("info: " + id + " " + price + " " + location + " " + desc + " " + rentedDates);
-		System.out.println("first avail: " + firstAvailRentDate);
 		
 		session.setAttribute("rentalID", id);
 		session.setAttribute("rentalPrice", price);

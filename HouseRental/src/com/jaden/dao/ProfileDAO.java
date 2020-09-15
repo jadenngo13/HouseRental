@@ -25,7 +25,6 @@ public class ProfileDAO {
 			default:
 				break;
 			}
-			System.out.println("valuess: " + firstName + " " + lastName + " " + username + " " + email + " " + bday);
 			stmt.setString(1, firstName);
 			stmt.setString(2, lastName);
 			stmt.setString(3, bday);
