@@ -72,7 +72,6 @@ public class LoginController extends HttpServlet {
 					response.sendRedirect("adminMain.jsp");
 					break;
 				case "owners":
-					System.out.println("id: " + user.getId());
 					session.setAttribute("listRentals", ownerDAO.getRentals(user.getId()));
 					session.setAttribute("ownerRented", ownerDAO.getRented(user.getId()));
 					session.setAttribute("tab1", 1);

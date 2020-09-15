@@ -58,7 +58,7 @@ public class SqlQueries {
 	public final static String sqlGetRentalDescription = "SELECT description FROM rentals WHERE id=?";
 	public final static String sqlGetRentalFileName = "SELECT image_file_name FROM rentals WHERE id=?";
 	
-	public final static String sqlGetRentalJoinRentalForm = "SELECT rental_forms.rental_id, rental_forms.start_date, rental_forms.end_date, "
+	public final static String sqlGetRentalJoinRentalForm = "SELECT rental_forms.rental_id, rental_forms.customer_id, rental_forms.start_date, rental_forms.end_date, "
 			+ "rentals.id, rentals.owner_id, rentals.price, rentals.location, rentals.description, rentals.image_file_name "
 			+ "FROM rental_forms "
 			+ "INNER JOIN rentals ON rental_forms.rental_id = rentals.id";

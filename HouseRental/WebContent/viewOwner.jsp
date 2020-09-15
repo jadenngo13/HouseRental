@@ -44,10 +44,11 @@
 						value="<c:out value='${owner.email}' />" /></td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center"><input type="submit"
-						value="Save" /></td>
+					<td colspan="2" align="center"><input class="submitButton" type="submit"
+						value="Close" /></td>
 				</tr>
 			</table>
+			<br>
 			<p>For actions such as cancelling rentals, please contact the respective owner of the house.</p>
 		</form>
 	</div>

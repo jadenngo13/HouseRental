@@ -25,7 +25,6 @@ public class UserDAO {
 			counter++;
 		
 		result[0] = counter;
-		System.out.println("counter: " + counter);
 		
 		// Get number of customers
 		counter = 0;
@@ -35,7 +34,6 @@ public class UserDAO {
 			counter++;
 		
 		result[1] = counter;
-		System.out.println("counter: " + counter);
 		
 		// Get number of owners
 		counter = 0;
@@ -45,7 +43,6 @@ public class UserDAO {
 			counter++;
 		
 		result[2] = counter;
-		System.out.println("counter: " + counter);
 		
 		// Get number of customers
 		counter = 0;
@@ -55,7 +52,6 @@ public class UserDAO {
 			counter++;
 		
 		result[3] = counter;
-		System.out.println("counter: " + counter);
 		
 		// Get number of rented rentals
 		result[4] = 0;

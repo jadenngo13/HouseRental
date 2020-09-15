@@ -61,9 +61,11 @@ public class CustomerDAO {
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalJoinRentalForm);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
-				Rental temp = new Rental(rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getString(8), rs.getString(9));
-				temp.setDaysMsg(getDaysLeftString(rs.getString(2), rs.getString(3)));
-				result.add(temp);
+				if (id == rs.getInt("customer_id")) {
+					Rental temp = new Rental(rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getString(8), rs.getString(9), rs.getString(10));
+					temp.setDaysMsg(getDaysLeftString(rs.getString(3), rs.getString(4)));
+					result.add(temp);
+				}
 			}
 			return result;
 		} catch (SQLException e) {
