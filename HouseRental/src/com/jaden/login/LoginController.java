@@ -52,10 +52,11 @@ public class LoginController extends HttpServlet {
 				user.setEmail(loginDAO.getEmail(user.getId(), user.getUserType()));
 				user.setUsername(loginDAO.getUsername(user.getId(), user.getUserType()));
 				user.setPassword(loginDAO.getPassword(user.getId(), user.getUserType()));
-				user.setRentals(custDAO.getRentedString(user.getId()));
+				user.setRentals(loginDAO.getRentedString(user.getId(), user.getUserType()));
 				
 				HttpSession session = request.getSession();
 				session.setAttribute("user", user);
+				session.setAttribute("type", user.getUserType());
 				session.setAttribute("type1", user.getUserType().substring(0, user.getUserType().length()-1));
 				
 				switch (user.getUserType()) {
@@ -71,9 +72,10 @@ public class LoginController extends HttpServlet {
 					response.sendRedirect("adminMain.jsp");
 					break;
 				case "owners":
+					System.out.println("id: " + user.getId());
 					session.setAttribute("listRentals", ownerDAO.getRentals(user.getId()));
 					session.setAttribute("ownerRented", ownerDAO.getRented(user.getId()));
-					session.setAttribute("tab", 0);
+					session.setAttribute("tab1", 1);
 					session.setAttribute("type2", 2);
 					response.sendRedirect("ownerMain.jsp");
 					break;

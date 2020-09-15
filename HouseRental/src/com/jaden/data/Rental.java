@@ -8,15 +8,15 @@ public class Rental {
 	private String description;
 	private String imageFName;
 	
-	public String daysMsg;
-	public String startDate;
-	public String endDate;
-	public String rentee;
-	public int formID;
+	private String daysMsg;
+	private String startDate;
+	private String endDate;
+	private String rentee;
+	private int formID;
 	
-	public Rental(int price, int ownerID, String location, String description, String imageFName) {
-		this.price = price;
+	public Rental(int ownerID, int price, String location, String description, String imageFName) {
 		this.ownerID = ownerID;
+		this.price = price;
 		this.location = location;
 		this.description = description;
 		this.imageFName = imageFName;
@@ -30,6 +30,20 @@ public class Rental {
 		this.location = location;
 		this.description = description;
 		this.imageFName = imageFName;
+	}
+	
+	// Overload
+	public Rental(int id, int ownerID, int price, String location, String description, String imageFName, String rentee, String startDate, String endDate, int formID) {
+		this.id = id;
+		this.ownerID = ownerID;
+		this.price = price;
+		this.location = location;
+		this.description = description;
+		this.imageFName = imageFName;
+		this.rentee = rentee;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.formID = formID;
 	}
 	
 	public int getId() {
@@ -53,14 +67,14 @@ public class Rental {
 	public String getDaysMsg() {
 		return daysMsg;
 	}
+	public String getRentee() {
+		return rentee;
+	}
 	public String getStartDate() {
 		return startDate;
 	}
 	public String getEndDate() {
 		return endDate;
-	}
-	public String getRentee() {
-		return rentee;
 	}
 	public int getFormID() {
 		return formID;
@@ -86,5 +100,17 @@ public class Rental {
 	}
 	public void setDaysMsg(String daysMsg) {
 		this.daysMsg = daysMsg;
+	}
+	public void setRentee(String rentee) {
+		this.rentee = rentee;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public void setFormID(int formID) {
+		this.formID = formID;
 	}
 }

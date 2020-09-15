@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.jaden.dao.ProfileDAO;
+import com.jaden.data.User;
 
 @WebServlet("/saveUser")
 public class SaveUser extends HttpServlet {
@@ -22,24 +23,20 @@ public class SaveUser extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
 		String firstName = request.getParameter("fname");
 		String lastName = request.getParameter("lname");
 		String username = request.getParameter("uname");
 		String email = request.getParameter("email");
 		String bday = request.getParameter("birthday");
-		String type = (String) session.getAttribute("type");
 		
 		try {
-			profileDAO.saveUser((int) session.getAttribute("id"), firstName, lastName, username, email, bday, type);
-			session.setAttribute("username", username);
-			session.setAttribute("fname", firstName);
-			session.setAttribute("lname", lastName);
-			session.setAttribute("email", email);
-			session.setAttribute("birthday", bday);
+			profileDAO.saveUser(user.getId(), firstName, lastName, username, email, bday, user.getUserType());
+			user = new User(user.getId(), firstName, lastName, bday, email, user.getRentals(), user.getUserType(), user.getUsername(), user.getPassword());
+			session.setAttribute("user", user);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		response.sendRedirect("viewProfile.jsp");
 	}
-
 }

@@ -20,6 +20,19 @@ public class CustomerDAO {
 	private ResultSet rs, rs1;
 	private RentalDao rentalDAO;
 	
+	public User getCustomer(int id) {
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetCustomerFromID);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), "customers", null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public List<Rental> getRented(int id) throws SQLException {
 		List<Rental> result = null;
 		List<Integer> ids = null;
@@ -50,7 +63,7 @@ public class CustomerDAO {
 			while (rs.next()) {
 				Rental temp = new Rental(rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getString(8), rs.getString(9));
 				System.out.println("rental form dates: " + rs.getString(2) + " - " + rs.getString(3));
-				temp.daysMsg = getDaysLeftString(rs.getString(2), rs.getString(3));
+				temp.setDaysMsg(getDaysLeftString(rs.getString(2), rs.getString(3)));
 				result.add(temp);
 			}
 			return result;

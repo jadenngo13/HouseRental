@@ -20,7 +20,12 @@
 			<a href="<%=request.getContextPath()%>/list">View Users</a>
 			<a href="<%=request.getContextPath()%>/logout">Logout</a>
 		</c:if>
-		<c:if test="${user.userType ne 'admins'}"> <a href="${type1}Main.jsp">Home</a> 
+		<c:if test="${user.userType == 'owners'}"> <a href="<%=request.getContextPath()%>/ohome">Home</a> 
+			<a class="active" href="viewProfile.jsp">Your Profile</a> 
+			<a href="<%=request.getContextPath()%>/olist">View Rentals</a> 
+			<a href="<%=request.getContextPath()%>/logout">Logout</a>
+		</c:if> 
+		<c:if test="${user.userType == 'customers'}"> <a href="${type1}Main.jsp">Home</a> 
 			<a class="active" href="viewProfile.jsp">Your Profile</a> 
 			<a href="viewRentals.jsp">View Rentals</a> 
 			<a href="<%=request.getContextPath()%>/logout">Logout</a>

@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.jaden.dao.CustomerDAO;
 import com.jaden.dao.RentalFormDAO;
 import com.jaden.data.RentalForm;
+import com.jaden.data.User;
 
 /**
  * Servlet implementation class ViewRentalForm
@@ -19,10 +21,11 @@ import com.jaden.data.RentalForm;
 public class ViewRentalForm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private RentalFormDAO rentalFormDAO;
-	private int rentalFormID;
+	private CustomerDAO customerDAO;
 
 	public void init() {
 		rentalFormDAO = new RentalFormDAO();
+		customerDAO = new CustomerDAO();
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,12 +33,11 @@ public class ViewRentalForm extends HttpServlet {
 		
 		int rentalFormID = Integer.parseInt(request.getParameter("selectedRentalForm"));
 		RentalForm form = rentalFormDAO.getRentalForm(rentalFormID);
-		session.setAttribute("customerName", rentalFormDAO.getCustomerFirstName(rentalFormID) + rentalFormDAO.getCustomerLastName(rentalFormID));
-		session.setAttribute("price", form.getPrice());
-		session.setAttribute("rentalFormStartDate", form.getStartDate());
-		session.setAttribute("rentalFormEndDate", form.getEndDate());
+		User customer = customerDAO.getCustomer(form.getCustomerID());
+		session.setAttribute("customer", customer);
+		session.setAttribute("rentalForm", form);
 	
-		response.sendRedirect("");
+		response.sendRedirect("viewRentalForm.jsp");
 	}
 
 }

@@ -2,6 +2,7 @@ package com.jaden.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import com.jaden.connection.DBConnection;
 import com.jaden.queries.SqlQueries;
@@ -185,5 +186,25 @@ public class LoginDao {
 			e.printStackTrace();
 		}
 		return null;	
+	}
+	
+	public String getRentedString(int id, String type) throws SQLException {
+		String result = null;
+		switch (type) {
+		case "owners":
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerRentals);
+			break;
+		case "customers":
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetCustomerRentals);
+			break;
+		default:
+			break;
+		}
+		stmt.setInt(1, id);
+		rs = stmt.executeQuery();
+		if (rs.next()) {
+			result = rs.getString(1);
+		}
+		return result;
 	}
 }

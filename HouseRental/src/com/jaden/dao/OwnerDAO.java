@@ -27,7 +27,7 @@ public class OwnerDAO {
 		stmt.setInt(1, id);
 		rs = stmt.executeQuery();
 		if (rs.next() && rs.getString(1) != null) {
-			System.out.println(rs.getString(1));
+			System.out.println("get rentals: " + rs.getString(1));
 			ids = Arrays.stream(rs.getString(1).split(","))
 			        .map(Integer::parseInt)
 			        .collect(Collectors.toList());
@@ -64,16 +64,27 @@ public class OwnerDAO {
 					stmt.setInt(1, f.getCustomerID());
 					rs = stmt.executeQuery();
 					if (rs.next()) {
-						r.rentee = rs.getString(2);
+						r.setRentee(rs.getString(2));
 					}
-					r.startDate = f.getStartDate();
-					r.endDate = f.getEndDate();
-					r.formID = f.getId();
+					r.setStartDate(f.getStartDate());
+					r.setEndDate(f.getEndDate());
+					r.setFormID(f.getId());
 					continue;
 				}
 			}
 		}
 		
+		return result;
+	}
+	
+	public String getRentedString(int id) throws SQLException {
+		String result = null;
+		stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerRentals);
+		stmt.setInt(1, id);
+		rs = stmt.executeQuery();
+		if (rs.next()) {
+			result = rs.getString(1);
+		}
 		return result;
 	}
 }

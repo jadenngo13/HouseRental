@@ -15,19 +15,18 @@
 
 <body>
 	<div class="topnav">
-		<c:if test="${tab == 1}"> <a class="active" href="<%=request.getContextPath()%>/home">Home</a> 
+		<c:if test="${tab == 1}"> <a class="active" href="<%=request.getContextPath()%>/ahome">Home</a> 
 			<a href="viewProfile.jsp">Your Profile</a>
-			<a href="<%=request.getContextPath()%>/list">View Users</a>
+			<a href="<%=request.getContextPath()%>/alist">View Users</a>
 			<a href="<%=request.getContextPath()%>/logout">Logout</a>
 		</c:if>
-		<c:if test="${tab == 2}"> <a href="<%=request.getContextPath()%>/home">Home</a> 
+		<c:if test="${tab == 2}"> <a href="<%=request.getContextPath()%>/ahome">Home</a> 
 			<a href="viewProfile.jsp">Your Profile</a>
-			<a class="active" href="<%=request.getContextPath()%>/list">View Users</a>
+			<a class="active" href="<%=request.getContextPath()%>/alist">View Users</a>
 			<a href="<%=request.getContextPath()%>/logout">Logout</a>
 		</c:if>
 	</div>
 	<div class="row">
-		<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
 		<c:if test="${tab == 1}">
 		<div class="container">
 			<br>
@@ -65,7 +64,7 @@
 				<hr>
 				<div class="container text-left">
 
-					<a href="<%=request.getContextPath()%>/new" class="btn btn-success">Add
+					<a href="<%=request.getContextPath()%>/anew" class="btn btn-success">Add
 						New User</a>
 				</div>
 				<br>
@@ -90,12 +89,11 @@
 								<td><c:out value="${user.userType.substring(0,user.userType.length()-1)}" /></td>
 
 								<td><a
-									href="edit?id=<c:out value='${user.id}' />&type=${user.userType}">Edit</a>
+									href="aedit?id=<c:out value='${user.id}' />&type=${user.userType}">Edit</a>
 									&nbsp;&nbsp;&nbsp;&nbsp; <a
-									href="delete?id=<c:out value='${user.id}' />&type=${user.userType}">Delete</a></td>
+									href="adelete?id=<c:out value='${user.id}' />&type=${user.userType}">Delete</a></td>
 							</tr>
 						</c:forEach>
-						<!-- } -->
 					</tbody>
 
 				</table>

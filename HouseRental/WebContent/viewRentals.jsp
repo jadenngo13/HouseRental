@@ -20,49 +20,6 @@
 			href="viewRentals.jsp">View Rentals</a> <a href="<%=request.getContextPath()%>/logout">Logout</a>
 	</div>
 	
-	<c:if test="${type2 == 2}">
-		<div class="row">
-			<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
-	
-			<div class="container">
-				<br>
-				<h3 class="text-center">Your Rented Rentals</h3>
-				<hr>
-				<br>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>Image</th>
-							<th>Location</th>
-							<th>Rentee</th>
-							<th>Dates</th>
-							<th>Info</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="rental" items="${ownerRented}">
-	
-							<tr>
-								<td><img  height="200px" width="400px" src="<c:out value="${rental.imageFName}"/>"/></td>
-								<td><c:out value="${rental.location}" /></td>
-								<td><c:out value="${rental.rentee}" /></td>
-								<td><c:out value="${rental.startDate} to ${rental.endDate}" /></td>
-								<td><form action="<%=request.getContextPath()%>/viewForm" method="post">
-										<input type="hidden" name="selectedRentalForm" value="${rental.formID}"/> 
-										<div class="rentButton" style="text-align: center">
-											<input type="submit" name="viewForm" value="View Info"/>
-										</div>
-									</form>
-								</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-	
-				</table>
-			</div>
-		</div>
-	</c:if>
-	
 	<c:if test="${type2 == 3}">
 		<div class="row">
 			<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->

@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import com.jaden.connection.DBConnection;
 import com.jaden.data.Rental;
 import com.jaden.data.RentalForm;
+import com.jaden.data.User;
 import com.jaden.queries.SqlQueries;
 
 public class RentalDao {
@@ -58,6 +59,19 @@ public class RentalDao {
 			e.printStackTrace();
 		}
 	    return rentals;
+	}
+	
+	public Rental selectRental(int id) {
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalFromID);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				return new Rental(id, rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public int getPrice(int id) {
@@ -263,6 +277,161 @@ public class RentalDao {
 		}
 		
 		return true;
+	}
+	
+	public void insertRental(User owner, Rental newRental) {
+		try {
+			// Insert rental into db
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlInsertRental);
+			stmt.setInt(1, newRental.getOwner());
+			stmt.setInt(2, newRental.getPrice());
+			stmt.setString(3, newRental.getLocation());
+			stmt.setString(4, newRental.getDescription());
+			stmt.setString(5, newRental.getImageFName());
+			stmt.execute();
+			
+			// Get newly inserted rentals' id
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRecentRental);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				newRental.setId(rs.getInt(1));
+			
+			// Update owner's rentals
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateOwnerRentals);
+			stmt.setString(1, owner.getRentals() + "," + newRental.getId());
+			stmt.setInt(2, owner.getId());
+			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+    public boolean updateRental(Rental rental) throws SQLException {
+        boolean rentalUpdated = false;
+        try {
+        	// Update rental
+        	stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateRental);
+        	stmt.setInt(1, rental.getPrice());
+    		stmt.setString(2, rental.getLocation());
+    		stmt.setString(3, rental.getDescription());
+    		stmt.setString(4, rental.getImageFName());
+    		stmt.setInt(5, rental.getId());
+    		stmt.executeUpdate();
+
+            rentalUpdated = stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        return rentalUpdated;
+    }
+
+	public void deleteRental(User owner, Rental toDel) {
+		try {
+			// Update renters, if currently being rented do not allow deletion
+			List<User> currRenters = getRenters(toDel, "current");
+			List<User> allRenters = getRenters(toDel, "all");
+			if (currRenters.size() <= 0) {
+				for (User u : allRenters) {
+					int idx = -1;
+					StringBuilder sb = new StringBuilder(u.getRentals());
+					for (int i = 0; i < sb.length(); i++) {
+						if (Character.getNumericValue(sb.charAt(i)) == toDel.getId()) {
+							idx = i;
+						}
+					}
+					if (idx >= 0)
+						sb.deleteCharAt(idx);
+					
+					stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateCustomerRentals);
+					stmt.setString(1, sb.toString());
+					stmt.setInt(2, u.getId());
+					rs = stmt.executeQuery();
+				}	
+			} else {
+				System.out.println("Cannot delete rental for it is currently being rented.");
+				return;
+			}
+			System.out.println("we are deleting");
+			
+			// Delete rental forms
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlDeleteRentalFormFromRentalID);
+			stmt.setInt(1, toDel.getId());
+			stmt.execute();
+			
+			// Update owner
+			System.out.println("before: " + owner.getRentals());
+			int idx = 0;
+			String[] r = owner.getRentals().split(",");
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < r.length; i++) {
+				if (!r[i].equals(Integer.toString(toDel.getId())));
+					sb.append(r[i] + ',');
+			}
+		
+			System.out.println("after: " + sb.toString());
+			
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateOwnerRentals);
+			stmt.setString(1, sb.toString());
+			stmt.setInt(2, owner.getId());
+			stmt.execute();
+			
+			// Delete rental
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlDeleteRental);
+			stmt.setInt(1, toDel.getId());
+			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	public boolean isRented(Rental rental) {
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalFormFromRentalID);
+			stmt.setInt(1, rental.getId());
+			while (rs.next()) {
+				LocalDate s = LocalDate.parse(rs.getString("start_date"));
+				LocalDate e = LocalDate.parse(rs.getString("end_date"));
+				LocalDate tdy = LocalDate.now();
+				if (tdy.isBefore(e) && tdy.isAfter(s)) {
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public List<User> getRenters(Rental rental, String type) {
+		List<User> result = new ArrayList<>();
+		List<Integer> ids = new ArrayList<>();
+		try {
+			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalFormFromRentalID);
+			stmt.setInt(1, rental.getId());
+			while (rs.next()) {
+				if (type.equals("current")) {
+					LocalDate s = LocalDate.parse(rs.getString("start_date"));
+					LocalDate e = LocalDate.parse(rs.getString("end_date"));
+					LocalDate tdy = LocalDate.now();
+					if (tdy.isBefore(e) && tdy.isAfter(s)) {
+						ids.add(rs.getInt("customer_id"));
+					}
+				} else if (type.equals("all")) {
+					ids.add(rs.getInt("customer_id"));
+				}
+			}
+			
+			for (int id : ids) {
+				stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetCustomerFromID);
+				stmt.setInt(1, id);
+				rs = stmt.executeQuery();
+				if (rs.next())
+					result.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), "customers", null, null));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }
 
