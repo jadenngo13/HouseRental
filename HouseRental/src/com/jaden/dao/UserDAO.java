@@ -127,7 +127,17 @@ public class UserDAO {
                
             }
             
-            stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetCustomerFromID);
+            switch(type) {
+            case "owners":
+            	stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerFromID);
+            	break;
+            case "customers":
+            	stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetCustomerFromID);
+            	break;
+            default:
+            	break;
+            }
+            
             stmt.setInt(1, id);
             rs = stmt.executeQuery();
             if (rs.next()) {
@@ -137,9 +147,7 @@ public class UserDAO {
             	email = rs.getString("email");
             	rentals = rs.getString("rentals");
             }
-            
-            System.out.println(id + " " + fname + " " + lname + " " + bday + " " + email + " " + type + " " + rentals + " " + uname + " " + pass);
-            user = new User(id, fname, lname, bday, email, type, rentals, uname, pass);
+            user = new User(id, fname, lname, bday, email, rentals, type, uname, pass);
         } catch (SQLException e) {
             e.printStackTrace();
         }

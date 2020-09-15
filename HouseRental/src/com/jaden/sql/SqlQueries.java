@@ -6,6 +6,7 @@ public class SqlQueries {
 	public final static String sqlGetUserFromLogin = "SELECT * FROM logins WHERE username=? and password=?";
 	public final static String sqlGetUser = "SELECT * FROM logins WHERE id=? and user_type=?";
 	public final static String sqlGetAllUsers = "SELECT * FROM logins";
+	public final static String sqlGetAllAdmins = "SELECT * FROM admins";
 	public final static String sqlGetAllOwners = "SELECT * FROM owners";
 	public final static String sqlGetAllCustomers = "SELECT * FROM customers";
 	public final static String sqlGetAllRentals = "SELECT * FROM rentals";

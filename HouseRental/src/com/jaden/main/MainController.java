@@ -172,7 +172,7 @@ public class MainController extends HttpServlet {
     /***** Owner Main *****/
     private void listRental(HttpServletRequest request, HttpServletResponse response)
     throws SQLException, IOException, ServletException {
-        refreshOwner(request, response);
+        System.out.println("refreshed");
         RequestDispatcher dispatcher = request.getRequestDispatcher("ownerMain.jsp");
         dispatcher.forward(request, response);
     }
@@ -201,6 +201,8 @@ public class MainController extends HttpServlet {
         String image = request.getParameter("image");
         Rental newRental = new Rental(owner.getId(), price, location, description, image);
         rentalDAO.insertRental(owner, newRental);
+        System.out.println("finished inserting");
+        owner = refreshOwner(request, response, owner.getId());
         response.sendRedirect("olist");
     }
 
@@ -213,7 +215,7 @@ public class MainController extends HttpServlet {
         String image = request.getParameter("image");
         Rental rental = new Rental(rentalID, owner.getId(), price, location, description, image);
         rentalDAO.updateRental(rental);
-        refreshOwner(request, response);
+        owner = refreshOwner(request, response, owner.getId());
         listRental(request, response);
         session.setAttribute("tab1", 1);
     }
@@ -223,7 +225,7 @@ public class MainController extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         Rental r = rentalDAO.selectRental(id);
         rentalDAO.deleteRental(owner, r);
-        refreshOwner(request, response);
+        owner = refreshOwner(request, response, owner.getId());
         response.sendRedirect("olist");
     }
     
@@ -232,8 +234,10 @@ public class MainController extends HttpServlet {
         response.sendRedirect("ownerMain.jsp");
     }
     
-    private void refreshOwner(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    private User refreshOwner(HttpServletRequest request, HttpServletResponse response, int id) throws SQLException, IOException {
     	session.setAttribute("listRentals", ownerDAO.getRentals(owner.getId()));
 		session.setAttribute("ownerRented", ownerDAO.getRented(owner.getId()));
+		session.setAttribute("user", ownerDAO.getOwner(id));
+		return ownerDAO.getOwner(id);
     }
 }

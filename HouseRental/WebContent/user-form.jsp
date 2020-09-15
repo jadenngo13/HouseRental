@@ -70,7 +70,7 @@
 				</fieldset>
 				
 				<fieldset class="form-group">
-					<label>User Type</label> <input type="text"
+					<label>User Type</label> <input type="text" readonly="readonly"
 						value="<c:out value='${user.userType}' />" class="form-control"
 						name="type" required="required">
 				</fieldset>

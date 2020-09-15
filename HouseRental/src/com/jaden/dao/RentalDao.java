@@ -187,8 +187,8 @@ public class RentalDao {
 			}
 			// Convert list back to string
 			String result = formatRentedDates(listOfDates, "grab");
-			System.out.println(result);
-			
+			System.out.println("formatted rentedstring: " + result);
+		
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -313,8 +313,8 @@ public class RentalDao {
 			
 			// Update owner's rentals
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateOwnerRentals);
-			System.out.println("insert into rentals: " + owner.getRentals() + " + " + newRental.getId());
-			stmt.setString(1, owner.getRentals() + "," + newRental.getId());
+			System.out.println("insert into rentals: " + owner.getRentals() + newRental.getId() + ",");
+			stmt.setString(1, owner.getRentals() + newRental.getId() + ",");
 			stmt.setInt(2, owner.getId());
 			stmt.execute();
 		} catch (Exception e) {
@@ -350,6 +350,7 @@ public class RentalDao {
 				for (User u : allRenters) {
 					
 					String[] r = u.getRentals().split(",");
+				//	System.out.println("we have split the rental string: " + Arrays.toString(r));
 					StringBuilder sb = new StringBuilder();
 					for (int i = 0; i < r.length; i++) {
 						if (!r[i].equals(Integer.toString(toDel.getId())));
@@ -373,12 +374,16 @@ public class RentalDao {
 			stmt.execute();
 			
 			// Update owner
-			int idx = 0;
+			System.out.println("before split in delete: " + owner.getRentals());
 			String[] r = owner.getRentals().split(",");
+			System.out.println("we have split the rental string: " + Arrays.toString(r));
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < r.length; i++) {
-				if (!r[i].equals(Integer.toString(toDel.getId())));
+				System.out.println("r[i]: " + r[i] + " vs toDel: " + toDel.getId());
+				if (!r[i].equals(Integer.toString(toDel.getId()))) {
 					sb.append(r[i] + ',');
+					System.out.println("not equal so adding");
+				}
 			}
 			
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlUpdateOwnerRentals);

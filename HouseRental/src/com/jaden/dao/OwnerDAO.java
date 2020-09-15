@@ -25,12 +25,13 @@ public class OwnerDAO {
 			stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerFromID);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
-			if (rs.next())
+			if (rs.next()) {
+				System.out.println("owners rentals: " + rs.getString(6));
 				return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), "owners", null, null);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("we didnt get one");
 		return null;
 	}
 	
@@ -39,18 +40,24 @@ public class OwnerDAO {
 		List<Integer> ids =  new ArrayList<>();
 		
 		// Get ids of all rentals
+		System.out.println("HERE");
 		stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetOwnerRentals);
 		stmt.setInt(1, id);
 		rs = stmt.executeQuery();
 		if (rs.next() && rs.getString(1) != null) {
-			ids = Arrays.stream(rs.getString(1).split(","))
-			        .map(Integer::parseInt)
-			        .collect(Collectors.toList());
+			String[] arr = rs.getString(1).split(",");
+			for (String s : arr)
+				ids.add(Integer.parseInt(s));
 		}
-		
+		for (int i : ids) {
+			System.out.println("id: " + i);
+		}
 		// Get all rental objects
 		rentalDAO = new RentalDao();
 		result = rentalDAO.selectAllRented(ids);
+		for (Rental r : result) {
+			System.out.println("rental: " + r.getId());
+		}
 		
 		return result;
 	}
@@ -59,14 +66,18 @@ public class OwnerDAO {
 		List<Rental> result = new ArrayList<>();
 		List<RentalForm> forms =  new ArrayList<>();
 		List<Integer> ids =  new ArrayList<>();
+		List<Integer> formIds = new ArrayList<>();
 		
 		// Get ids of all rentals
 		stmt = DBConnection.conn.prepareStatement(SqlQueries.sqlGetRentalFormFromOwnerID);
 		stmt.setInt(1, id);
 		rs = stmt.executeQuery();
 		while (rs.next()) {
-			forms.add(new RentalForm(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getInt(7)));
-			ids.add(rs.getInt(2));
+			if (!formIds.contains(rs.getInt(1))) { // Check for duplicates
+				formIds.add(rs.getInt(1));
+				ids.add(rs.getInt(2));
+				forms.add(new RentalForm(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getInt(7)));
+			}
 		}
 		
 		// Get all rental objects and set additional information for display
