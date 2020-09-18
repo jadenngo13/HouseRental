@@ -14,6 +14,10 @@
 </head>
 
 <body>
+	<%
+		if(session.getAttribute("user") == null)
+			response.sendRedirect("login.jsp");
+	%>
 	<div class="topnav">
 		<a class="active" href="<%=request.getContextPath()%>/ahome">Home</a> <a
 			href="viewProfile.jsp">Your Profile</a> <a href="adminMain.jsp"> View Users</a> 

@@ -15,6 +15,10 @@
 </head>
 
 <body>
+	<%
+		if(session.getAttribute("username") == null)
+			response.sendRedirect("login.jsp");
+	%>
 	<div class="topnav">
 		<c:if test="${tab1 == 1}"> <a class="active" href="<%=request.getContextPath()%>/ohome">Home</a> 
 			<a href="viewProfile.jsp">Your Profile</a>

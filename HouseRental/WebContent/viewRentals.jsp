@@ -15,6 +15,10 @@
 	crossorigin="anonymous">
 </head>
 <body>
+	<%
+		if(session.getAttribute("user") == null)
+			response.sendRedirect("login.jsp");
+	%>
 	<div class="topnav">
 		<a href="${type1}Main.jsp">Home</a> <a href="viewProfile.jsp">Your Profile</a> <a class="active"
 			href="viewRentals.jsp">View Rentals</a> <a href="<%=request.getContextPath()%>/logout">Logout</a>

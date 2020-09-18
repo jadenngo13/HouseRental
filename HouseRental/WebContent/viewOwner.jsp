@@ -13,6 +13,10 @@
 	crossorigin="anonymous">
 </head>
 <body>
+	<%
+		if(session.getAttribute("user") == null)
+			response.sendRedirect("login.jsp");
+	%>
 	<div class="topnav">
 		<c:if test="${user.userType == 'customers'}"> <a href="${type1}Main.jsp">Home</a> 
 			<a class="active" href="viewProfile.jsp">Your Profile</a> 
